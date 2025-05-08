@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Popup with Input</title>
+<style>
+  .popup {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.4);
+  }
+
+  .popup-content {
+    background-color: #fefefe;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+  }
+
+  .close-button {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+  }
+
+  .close-button:hover,
+  .close-button:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+  }
+</style>
+</head>
+<body>
+
+<button onclick="showInputPopup()">Open Input Popup</button>
+
+<div id="inputPopup" class="popup">
+  <div class="popup-content">
+    <span class="close-button" onclick="closeInputPopup()">&times;</span>
+    <h3>Enter Some Text:</h3>
+    <input type="text" id="inputText">
+    <button onclick="processInput()">Submit</button>
+    <p id="output"></p>
+  </div>
+</div>
+
+<script>
+function showInputPopup() {
+  document.getElementById("inputPopup").style.display = "block";
+  // Optionally clear the input field when the popup opens
+  document.getElementById("inputText").value = "";
+  document.getElementById("output").textContent = "";
+}
+
+function closeInputPopup() {
+  document.getElementById("inputPopup").style.display = "none";
+}
+
+function processInput() {
+  const inputText = document.getElementById("inputText").value;
+  document.getElementById("output").textContent = "You entered: " + inputText;
+  // You can now do something with the inputText value,
+  // like sending it to a server or updating other parts of your page.
+  console.log("User input:", inputText);
+}
+
+window.onclick = function(event) {
+  if (event.target == document.getElementById("inputPopup")) {
+    closeInputPopup();
+  }
+}
+</script>
+
+</body>
+</html>

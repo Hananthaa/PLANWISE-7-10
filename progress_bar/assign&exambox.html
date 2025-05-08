@@ -1,0 +1,215 @@
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+
+/*accordian style*/
+.accordion {
+  background-color: #eee;
+  color: #444;
+  cursor: pointer;
+  padding: 18px;
+  width: 100%;
+  border: none;
+  text-align: left;
+  outline: none;
+  font-size: 15px;
+  transition: 0.4s;
+}
+
+.active, .accordion:hover {
+  background-color: #ccc; 
+}
+
+.panel {
+  padding: 0 18px;
+  display: none;
+  background-color: white;
+  overflow: hidden;
+}
+
+.panel {
+  padding: 0 18px;
+  background-color: white;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.2s ease-out;
+}
+
+/*popup style*/
+.popup {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.4);
+  }
+
+.popup-content {
+    background-color: #fefefe;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+  }
+
+.close-button {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+  }
+
+.close-button:hover,
+  .close-button:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+  }
+</style>
+</head>
+
+<body>
+
+<!--- This is for exam tracker --->
+<button class="accordion" id ="accordianContainer">Exam Tracker</button>
+<div class="panel">
+    <br>
+    <button onclick="showInputPopup()">Add Exam</button>
+
+    <div id="inputPopup" class="popup">
+      <div class="popup-content">
+        <span class="close-button" onclick="closeInputPopup()">&times;</span>
+        <p>Subject:</p> 
+        <input type="text" id="inputSubject">
+        <p>Date of the exam:</p>
+        <button>Calander</button>
+        <p>Topics needed to learn</p>
+        <button>Add topic</button>
+        <button onclick="processInput()">Submit</button>addAccordionItem()
+        <p id="output"></p>
+      </div>
+    </div>
+</div>
+
+<!--- This is for asignment tracker (DONT TOUCH UNTIL UP IS WORKING) --->
+<button class="accordion">Assignment Tracker</button>
+<div class="panel">
+    <br>
+    <button>Add Assignment</button>
+    <p>Test</p>
+</div>
+
+
+<script>
+var acc = document.getElementsByClassName ("accordion");
+var i;
+
+for (i = 0; i < acc.length; i++) {
+  acc[i].addEventListener("click", function() {
+    this.classList.toggle("active");
+    var panel = this.nextElementSibling;
+    if (panel.style.display === "block") {
+      panel.style.display = "none";
+    } else {
+      panel.style.display = "block";
+    }
+  });
+}
+
+var acc = document.getElementsByClassName("accordion");
+var i;
+
+for (i = 0; i < acc.length; i++) {
+  acc[i].addEventListener("click", function() {
+    this.classList.toggle("active");
+    var panel = this.nextElementSibling;
+    if (panel.style.maxHeight) {
+      panel.style.maxHeight = null;
+    } else {
+      panel.style.maxHeight = panel.scrollHeight + "px";
+    }
+  });
+}
+
+
+//input popoup 
+function showInputPopup() {
+  document.getElementById("inputPopup").style.display = "block";
+  // Optionally clear the input field when the popup opens
+  document.getElementById("inputText").value = "";
+  document.getElementById("output").textContent = "";
+}
+
+function closeInputPopup() {
+  document.getElementById("inputPopup").style.display = "none";
+}
+
+function processInput() {
+  const inputText = document.getElementById("inputText").value;
+  document.getElementById("output").textContent = "You entered: " + inputText;
+  // You can now do something with the inputText value,
+  // like sending it to a server or updating other parts of your page.
+  console.log("User input:", inputText);
+}
+
+window.onclick = function(event) {
+  if (event.target == document.getElementById("inputPopup")) {
+    closeInputPopup();
+  }
+}
+
+//attempt to add things in accordian ***
+function addAccordionItem() {
+  const title = document.getElementById("itemTitle").value.trim();
+  const content = document.getElementById("itemContent").value.trim();
+
+  if (title && content) {
+    const accordionContainer = document.getElementById("accordionContainer");
+
+    // Create the header element
+    const header = document.createElement("div");
+    header.classList.add("accordion-header");
+    header.textContent = title;
+
+    // Create a toggle indicator (optional, for visual cue)
+    const toggleIndicator = document.createElement("span");
+    toggleIndicator.textContent = "+"; // Or an arrow icon
+    header.appendChild(toggleIndicator);
+
+    // Add event listener to toggle content
+    header.addEventListener("click", function() {
+      this.classList.toggle("active");
+      const contentDiv = this.nextElementSibling;
+      if (contentDiv.style.display === "block") {
+        contentDiv.style.display = "none";
+        toggleIndicator.textContent = "+"; // Update indicator
+      } else {
+        contentDiv.style.display = "block";
+        toggleIndicator.textContent = "-"; // Update indicator
+      }
+    });
+
+    // Create the content element
+    const contentDiv = document.createElement("div");
+    contentDiv.classList.add("accordion-content");
+    contentDiv.textContent = content;
+
+    // Append the new elements to the accordion container
+    accordionContainer.appendChild(header);
+    accordionContainer.appendChild(contentDiv);
+
+    // Close the popup after adding
+    closeInputPopup();
+  } else {
+    alert("Please enter both a title and content.");
+  }
+}
+</script>
+
+</body>
+</html>

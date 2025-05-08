@@ -1,0 +1,28 @@
+.progress-container {
+width: 300px;
+margin-bottom: 20px;
+display: flex;
+align-items: center;
+}
+
+.progress-bar {
+background-color: #f0f0f0;
+border-radius: 5px;
+height: 20px;
+width: 100%;
+overflow: hidden; /* To hide the progress fill when it exceeds the bar */
+margin-right: 10px;
+}
+
+.progress-fill {
+background-color: #4CAF50; /* Or any color you like */
+height: 100%;
+width: 0%; /* Start with 0% width */
+border-radius: 5px;
+transition: width 0.3s ease-in-out; /* Smooth animation */
+}
+
+.checkbox-list label {
+display: block;
+margin-bottom: 5px;
+}

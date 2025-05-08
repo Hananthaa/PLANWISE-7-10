@@ -5,16 +5,14 @@
     {% load static %}
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Calendar: {{ month }}/{{ year }}</title>
+    <title>YES Planwise : Calendar</title>
+    <link rel="icon" href="static/images/logo.png" type="image/png">
     <style>
-        .logo-container {
-            text-align: center; /* centers inline elements like <img> */
-            margin-top: 10px;   /* optional: adds space above */
-        }
 
-        .logo-container img {
-            width: 5px; height: 150px;
-        }
+    header h1 {
+      margin-left: 15px;
+      font-size: 24px;
+    }
         body {
             background-color: #091c6c;  /* Sets the background color to AliceBlue (hex code) */
         }
@@ -59,35 +57,68 @@
             text-decoration: none;
             color: #007bff;
         }
+        .task button {
+    background-color: red;
+    color: white;
+    border: none;
+    padding: 3px 6px;
+    margin-left: 5px;
+    cursor: pointer;
+    border-radius: 3px;
+}
+
     </style>
 </head>
+
 <body>
-<div class="logo-container">
-<img src="{% static 'images/logo.png' %}" alt="Logo" style="width:200px;">
-</div>
+    <a href="{% url 'upload_background' %}">Change Background</a>
      <h1>CALENDAR FOR {{ month }}/{{ year }}</h1>
 <div>
-        <h2>Add Your Task</h2>
+    <br>
+    <h2>Add Your Task</h2>
         <form method="post" action="{% url 'calendar' year month %}">
             {% csrf_token %}
             <label style="color: white;">Date:</label>
             <input type="date" name="date" required>
             <label style="color: white;">Task:</label>
-            <input type="text" name="description" required>
+             <input type="text" name="description" required>
             <button type="submit">Save</button>
         </form>
     </div>
+
+     <div class="task">
+      {% for task in tasks %}
+    {{ task.name }}
+    <form action="{% url 'delete_task' task.id %}" method="post" style="display:inline;">
+        {% csrf_token %}
+        <button type="submit">Delete</button>
+    </form>
+  </div>
+     {% endfor %}
+
+
     <h2>Task List</h2>
-<p>
-    {{tasks}}
-</p>
+    <div style="color:white">
+    {% for task in tasks %}
+      {{ task }}
+        <br>
+    {% endfor %}
+    </div>
+
+     <br>
+<h2>Detected Habits</h2>
+<ul style="color:white">
+    {% for name, count in habits.items %}
+        <li><strong>{{ name }}</strong> — repeated {{ count }} times</li>
+    {% empty %}
+        <li>No habits found yet</li>
+    {% endfor %}
+</ul>
     <br>
-    <h2>Calendar for {{ month }}/{{ year }}</h2>
-    <div>{{ html_calendar|safe }}</div>
-<!-- myapp/templates/calendar_app/calendar.html -->
+    <div>{{ html_calendar|safe }}
     <a href="{% url 'calendar' prev_year prev_month %}">Previous Month</a>
     <a href="{% url 'calendar' next_year next_month %}">Next Month</a>
-    print(records)
+    </div>
 </body>
 </html>
 

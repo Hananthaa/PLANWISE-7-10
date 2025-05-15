@@ -1,0 +1,56 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard | PLANWISE</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-image: url("{% static 'images/background.jpg' %}");
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            color: white;
+        }
+        .dashboard-container {
+            background-color: rgba(0, 0, 0, 0.7);
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 30px;
+            border-radius: 10px;
+            text-align: center;
+        }
+        a {
+            text-decoration: none;
+            color: #fff;
+            background-color: #007bff;
+            padding: 10px 20px;
+            border-radius: 5px;
+            display: inline-block;
+            margin: 10px;
+        }
+        a:hover {
+            background-color: #0056b3;
+        }
+        .quote-image img {
+            max-width: 100%;
+            height: auto;
+            margin-top: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard-container">
+        <h1>Welcome to your Dashboard, {{ user.first_name }}!</h1>
+        <p>Here’s where you can manage your calendar and alarms.</p>
+        <a href="#">Manage Calendar</a>
+        <a href="#">Manage Alarms</a>
+        <a href="{% url 'logout' %}">Logout</a>
+    </div>
+</body>
+</html>

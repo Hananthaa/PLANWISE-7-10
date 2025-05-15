@@ -1,0 +1,8 @@
+/* style.css */
+body {
+    background-color: rgb(0, 0, 0);
+}
+
+h1 {
+    color: darkblue;
+}

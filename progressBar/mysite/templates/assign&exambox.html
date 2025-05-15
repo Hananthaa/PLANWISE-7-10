@@ -1,0 +1,105 @@
+{% load static %}
+
+<html>
+
+<head>
+  {% block extrahead %}
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="{% static 'style.css' %}">
+  {% endblock %}
+</head>
+
+<body>
+  <!--- This is for exam tracker --->
+  <button class="accordion" id ="accordianContainer">Exam Tracker</button>
+  <div class="panel">
+      <br>
+      <button onclick="showInputPopup()">Add Exam</button>
+        <form method="post">
+          <div id="inputPopup" class="popup">
+            <div class="popup-content">
+              <span class="close-button" onclick="closeInputPopup()">&times;</span>
+              {% csrf_token %}
+              {{ form.as_p }}
+              <button type="submit">Save Exam</button>
+            </div>
+          </div>
+            
+        </form>
+
+        <hr>
+
+        <h3>Saved Exams:</h3>
+        {% if exams %}
+          <ul>  
+              {% for exam in exams %}
+                
+                <!-- <li>Subject: {{ exam.subject }}, Date: {{ exam.exam_date }}</li>
+                <button type="submit">Delete</button> -->
+                <li> 
+                  Subject: {{ exam.subject }},<br>
+                  Due Date: {{ exam.exam_date }} <br>
+                  <!-- <button onclick="openExamDetails('{{ exam.subject }}', '{{ exam.exam_date }}',
+                  '{{ exam.id }}')">Details</button> -->
+
+                  <div class="progress-container">
+                    <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill"></div>
+                    </div>
+                    <span id="progressText">0%</span>
+                  </div>
+
+                  <div class="checkbox-list">
+                    <label><input type="checkbox" class="task-checkbox" value="task1"> Task 1</label><br>
+                    <label><input type="checkbox" class="task-checkbox" value="task2"> Task 2</label><br>
+                    <label><input type="checkbox" class="task-checkbox" value="task3"> Task 3</label><br>
+                    <label><input type="checkbox" class="task-checkbox" value="task4"> Task 4</label><br>
+                  </div>
+
+                  <button onclick="openExamDetails('{{ exam.subject }}', '{{ exam.exam_date }}',
+                  '{{ exam.id }}')">Details</button>
+
+                    <!-- Subject: {{ exam.subject }}, Date: {{ exam.exam_date }}
+                    <button onclick="openExamDetails('{{ exam.subject }}', '{{ exam.exam_date }}',
+                    '{{ exam.id }}')">Details</button> -->
+                    <form method="post" action="{% url 'delete_exam' exam.id %}"> 
+                        {% csrf_token %}
+                        <button type="submit">Delete</button>
+                </li>
+                {% endfor %}
+          </ul>
+        {% else %}
+            <p>No exams have been saved yet.</p>
+        {% endif %}
+
+  </div>
+
+  <!--- This is for asignment tracker (DONT TOUCH UNTIL UP IS WORKING) --->
+  <button class="accordion">Assignment Tracker</button>
+  <div class="panel">
+      <br>
+      <button>Add Assignment</button>
+      <p>Test</p>
+  </div>
+
+  <script src="{% static 'scripts.js' %}"></script>
+  <script>
+        const inputPopup = document.getElementById('inputPopup');
+
+        function showInputPopup() {
+            inputPopup.style.display = 'block';
+        }
+
+        function closeInputPopup() {
+            inputPopup.style.display = 'none';
+        }
+
+        function openExamDetails(subject, date, id) {
+            document.getElementById('popup-subject').textContent = subject;
+            document.getElementById('popup-date').textContent = date;
+            // You might want to store the ID in the popup for further actions
+            showInputPopup();
+        }
+    </script>
+</body>
+</html>

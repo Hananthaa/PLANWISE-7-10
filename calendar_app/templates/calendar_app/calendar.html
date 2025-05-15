@@ -1,0 +1,124 @@
+<!-- myapp/templates/calendar_app/calendar.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YES Planwise : Calendar</title>
+    <link rel="icon" href="static/images/logo.png" type="image/png">
+    <style>
+
+    header h1 {
+      margin-left: 15px;
+      font-size: 24px;
+    }
+        body {
+            background-color: #091c6c;  /* Sets the background color to AliceBlue (hex code) */
+        }
+        h1 {
+            text-align: center;  color: white;
+        }
+        h2 {
+            color: white;
+        }
+        a {
+            color: white;
+        }
+        table { width: 100%; border-collapse: collapse; }
+        th {
+            background-color: #c5dee3;   /* White background */
+            color: white;              /* Black font color */
+            border: 1px solid white;   /* Black border */
+            width: 50px;
+            height: 50px;
+            }
+        td {
+            margin: 0, 30px;
+            background-color: white;   /* White background */
+            text-align: center;
+            color: black;              /* Black font color */
+            border: 1px solid black;   /* Black border */
+            width: 40px;
+            height: 50px;
+            }
+        p {
+            color: white; padding-left: 15px;             /* Black font color */
+            }
+        ul { padding-left: 15px; margin: 5px 0 0; }
+        .task { background: black; padding: 3px; border-radius: 3px; margin-bottom: 2px; }
+        .nav a { margin: 0 10px; }
+        .navigation {
+            text-align: center;
+            margin: 20px 0;
+        }
+        .navigation a {
+            margin: 0 10px;
+            text-decoration: none;
+            color: #007bff;
+        }
+        .task button {
+    background-color: red;
+    color: white;
+    border: none;
+    padding: 3px 6px;
+    margin-left: 5px;
+    cursor: pointer;
+    border-radius: 3px;
+}
+
+    </style>
+</head>
+
+<body>
+    <a href="{% url 'upload_background' %}">Change Background</a>
+     <h1>CALENDAR FOR {{ month }}/{{ year }}</h1>
+<div>
+    <br>
+    <h2>Add Your Task</h2>
+        <form method="post" action="{% url 'calendar' year month %}">
+            {% csrf_token %}
+            <label style="color: white;">Date:</label>
+            <input type="date" name="date" required>
+            <label style="color: white;">Task:</label>
+             <input type="text" name="description" required>
+            <button type="submit">Save</button>
+        </form>
+    </div>
+
+     <div class="task">
+      {% for task in tasks %}
+    {{ task.name }}
+    <form action="{% url 'delete_task' task.id %}" method="post" style="display:inline;">
+        {% csrf_token %}
+        <button type="submit">Delete</button>
+    </form>
+  </div>
+     {% endfor %}
+
+
+    <h2>Task List</h2>
+    <div style="color:white">
+    {% for task in tasks %}
+      {{ task }}
+        <br>
+    {% endfor %}
+    </div>
+
+     <br>
+<h2>Detected Habits</h2>
+<ul style="color:white">
+    {% for name, count in habits.items %}
+        <li><strong>{{ name }}</strong> — repeated {{ count }} times</li>
+    {% empty %}
+        <li>No habits found yet</li>
+    {% endfor %}
+</ul>
+    <br>
+    <div>{{ html_calendar|safe }}
+    <a href="{% url 'calendar' prev_year prev_month %}">Previous Month</a>
+    <a href="{% url 'calendar' next_year next_month %}">Next Month</a>
+    </div>
+</body>
+</html>
+

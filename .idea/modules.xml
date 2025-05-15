@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/yesplanwise2.iml" filepath="$PROJECT_DIR$/.idea/yesplanwise2.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/PLANWISE-7-10-login-and-sign-up.iml" filepath="$PROJECT_DIR$/.idea/PLANWISE-7-10-login-and-sign-up.iml" />
     </modules>
   </component>
 </project>

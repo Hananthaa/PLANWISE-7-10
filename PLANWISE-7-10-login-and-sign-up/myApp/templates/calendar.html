@@ -1,0 +1,56 @@
+<!-- templates/calendar.html -->
+{% extends "myApp/base.html" %}
+{% block content %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <style>
+        h1 {
+    text-align: center;
+}
+        body {
+            font-family: Arial, sans-serif;
+            padding: 2rem;
+            background-color: #f8f8f8;
+        }
+        .calendar-nav {
+            margin-bottom: 20px;
+            margin-left: 720px;
+        }
+        .calendar-nav a {
+            padding: 0.5rem 1rem;
+            background-color: #4CAF50;
+            color: white;
+            text-decoration: none;
+            margin: 0 10px;
+            border-radius: 5px;
+        }
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            max-width: 700px;
+            margin-top: 1rem;
+            margin-left: 30rem;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            text-align: center;
+            padding: 10px;
+            height: 80px;
+        }
+        th {
+            background-color: #eaeaea;
+        }
+    </style>
+</head>
+<body>
+    <h1>{{ month_name }} {{ year }}</h1>
+    <div class="calendar-nav">
+        <a href="?month={{ prev_month.month }}&year={{ prev_month.year }}">⬅ Prev</a><a href="?month={{ next_month.month }}&year={{ next_month.year }}">Next ➡</a>
+    </div>
+    <div class="calendar">
+        {{ calendar|safe }}
+    </div>
+</body>
+</html>
+{% endblock %}

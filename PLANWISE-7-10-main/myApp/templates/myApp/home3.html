@@ -1,0 +1,86 @@
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard | PLANWISE</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-image: url("{% static 'images/background.jpg' %}");
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            color: white;
+        }
+        .dashboard-container {
+            background-color: rgba(0, 0, 0, 0.7);
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 30px;
+            border-radius: 10px;
+            text-align: center;
+        }
+        a {
+            text-decoration: none;
+            color: #fff;
+            background-color: #007bff;
+            padding: 10px 20px;
+            border-radius: 5px;
+            display: inline-block;
+            margin: 10px;
+        }
+        a:hover {
+            background-color: #0056b3;
+        }
+        .quote-image img {
+            max-width: 100%;
+            height: auto;
+            margin-top: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+        }
+        .task-summary {
+            background-color: rgba(255, 255, 255, 0.1);
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 20px;
+        }
+        .task-summary p {
+            margin: 5px 0;
+            font-size: 18px;
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard-container">
+        <h1>Welcome to your Dashboard, {{ user.first_name }}!</h1>
+        <p>Here’s where you can manage your calendar and alarms.</p>
+
+        <a href="{% url 'calendar' %}">View Calendar</a>
+        <a href="{% url 'tasks' %}">Tasks Manager</a>
+        <a href="{% url 'forum' %}">Forum Discussion</a>
+        <a href="{% url 'logout' %}">Logout</a>
+
+        <!-- ✅ Task stats -->
+        <div class="task-summary mt-4">
+            <h3>📊 Task Summary</h3>
+            <p>Total Tasks: {{ total_tasks }}</p>
+            <p>✅ Completed: {{ completed_tasks }}</p>
+            <p>🕒 Pending: {{ pending_tasks }}</p>
+        </div>
+        <hr>
+    <h2>📢 Forum Summary</h2>
+    <p>Total Posts: {{ total_posts }}</p>
+    <p>Total Replies: {{ total_replies }}</p>
+   {% if most_active_post %}
+    <p>🔥 Most Active Topic: "{{ most_active_post.title }}"</p>
+        {% else %}
+    <p>No forum activity yet.</p>
+    {% endif %}
+    </div>
+</body>
+</html>

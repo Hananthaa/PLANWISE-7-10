@@ -9,6 +9,18 @@ from django.urls import reverse
 from django.utils.text import slugify
 from django_ckeditor_5.fields import CKEditor5Field
 from django.contrib.auth.models import User
+from django.db import models
+from django.contrib.auth.models import User
+
+class Exam(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
+    subject = models.CharField(max_length=100)
+    exam_date = models.DateField()
+    mark = models.IntegerField(null=True, blank=True)  # Add this field
+    # other fields as needed
+
+    def __str__(self):
+        return self.subject
 
 class Task(models.Model):
     title = models.CharField(max_length=100)

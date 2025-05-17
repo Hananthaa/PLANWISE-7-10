@@ -20,6 +20,61 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import ForumPost
 from django.contrib import messages
+from django.shortcuts import render, redirect, get_object_or_404
+from django.http import HttpResponse
+from .forms import ExamForm
+from .models import Exam
+
+@login_required
+def test(request):
+    if request.method == 'POST':
+        form = ExamForm(request.POST)
+        if form.is_valid():
+            exam = form.save(commit=False)
+            exam.user = request.user  # ✅ Assign the logged-in user
+            exam.save()
+            return redirect('test')  # Redirect back to same page after saving
+    else:
+        form = ExamForm()
+
+    exams = Exam.objects.filter(user=request.user)
+
+    # Generate consistent colors for each subject
+    subject_colors = {}
+    color_palette = [
+        '#FFD700', '#1E90FF', '#FF6347', '#3CB371', '#BA55D3',
+        '#FF4500', '#00CED1', '#FF69B4', '#8A2BE2', '#00FA9A'
+    ]
+    color_index = 0
+
+    for exam in exams:
+        if exam.subject not in subject_colors:
+            subject_colors[exam.subject] = color_palette[color_index % len(color_palette)]
+            color_index += 1
+
+    return render(request, 'myApp/assign&exambox.html', {
+        'form': form,
+        'exams': exams,
+        'subject_colors': subject_colors
+    })
+
+#def exam_success(request):
+    #return render(request, 'myApp/exam_success.html')
+
+#def display_exams(request):
+    #exams = Exam.objects.all()  # Retrieve all Exam objects from the database
+    #return render(request, 'myApp/display_exams.html', {'exams': exams})
+@login_required
+def delete_exam(request, exam_id):
+    exam = get_object_or_404(Exam, pk=exam_id)
+
+    # Optional: Confirm before deleting on GET, only delete on POST
+    if request.method == 'POST':
+        exam.delete()
+        return redirect('test')
+
+    # You can also render a simple confirmation template here
+    return HttpResponse("This view only accepts POST requests to delete an exam.")
 
 @login_required
 def edit_post(request, post_id):

@@ -69,3 +69,22 @@ class Comment(models.Model):
 
     def __str__(self):
         return f'Comment by {self.user.username} on {self.post.title}'
+
+class Subject(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
+    subject = models.CharField(max_length=100)
+    exam_date = models.DateField()
+
+    def __str__(self):
+        return self.subject
+    
+class Topic(models.Model):
+    subject = models.ForeignKey(Subject, on_delete=models.CASCADE, related_name='topics')
+    title = models.CharField(max_length=200)
+    content = models.TextField(blank=True, null=True)  # <--- Make sure this line exists and is spelled correctly
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    # Add other fields for your topic (content, etc.)
+
+    def __str__(self):
+        return f"{self.title} (under {self.subject.subject})"

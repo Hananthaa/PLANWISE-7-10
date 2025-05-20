@@ -23,4 +23,7 @@ urlpatterns = [
     path('forum/create/', views.create_post, name='create_post'),
     path('forum/edit/<int:post_id>/', views.edit_post, name='edit_post'),
     path('forum/delete/<int:post_id>/', views.delete_post, name='delete_post'),
+    path('tracker', views.tracker, name='tracker'),
+    path('delete_subject/<int:subject_id>/', views.delete_subject, name='delete_subject'),
+    path('add_topic/', views.add_topic, name='add_topic'),
 ]

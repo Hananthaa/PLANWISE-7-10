@@ -22,8 +22,8 @@ from .models import ForumPost
 from django.contrib import messages
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse
-from .forms import ExamForm
-from .models import Exam
+from .forms import ExamForm, SubjectForm, TopicForm
+from .models import Exam, Subject, Topic
 
 @login_required
 def test(request):
@@ -342,3 +342,46 @@ def create_post(request):
         ForumPost.objects.create(user=request.user, title=title, content=content)
         return redirect('forum')
     return render(request, 'myApp/create_post.html')
+
+#view tracker
+def tracker(request):
+    print ("hi++++++++++++++++++++++++++++")
+    if request.method == 'POST':
+        print("Wowo post :O")
+        form = SubjectForm(request.POST)
+        if form.is_valid():
+            form.save()
+    else:
+        form = SubjectForm()
+    subject = Subject.objects.all()  # Retrieve all saved exams
+    return render(request, 'myapp/assignment&examTracker/tracker.html',
+                  {'subject': subject})
+
+def display_exams(request):
+    exams = Exam.objects.all()  # Retrieve all Exam objects from the database
+    return render(request, 'display_exams.html', {'exams': exams})
+
+def delete_subject(request, subject_id):
+    subject = get_object_or_404(Subject, pk=subject_id)
+
+    # Optional: Confirm before deleting on GET, only delete on POST
+    if request.method == 'POST':
+        subject.delete()
+        return redirect('tracker')
+
+    # You can also render a simple confirmation template here
+    return HttpResponse("This view only accepts POST requests to delete an exam.")
+
+def add_topic(request):
+    if request.method == 'POST':
+        form = TopicForm(request.POST)
+        subject_id = request.POST.get('subject_id')
+        subject = get_object_or_404(Subject, pk=subject_id)
+        if form.is_valid():
+            topic = form.save(commit=False)
+            topic.subject = subject
+            topic.save()
+            return redirect('tracker') # Redirect back to the tracker page
+    else:
+        # This should ideally not be accessed directly via GET in this setup
+        return redirect('tracker')

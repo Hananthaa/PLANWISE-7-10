@@ -208,3 +208,7 @@ canvas {
   text-decoration: none;
   cursor: pointer;
 }
+
+h2 {
+  color: black;
+}

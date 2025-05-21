@@ -377,8 +377,11 @@ def add_topic(request):
         form = TopicForm(request.POST)
         subject_id = request.POST.get('subject_id')
         subject = get_object_or_404(Subject, pk=subject_id)
+        print (subject_id + '========================')
+        print (subject.subject + '--------------------------')
         if form.is_valid():
             topic = form.save(commit=False)
+            print (topic.title + '0000000000000000000000000000000000')
             topic.subject = subject
             topic.save()
             return redirect('tracker') # Redirect back to the tracker page

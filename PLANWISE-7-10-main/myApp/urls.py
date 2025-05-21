@@ -25,5 +25,5 @@ urlpatterns = [
     path('forum/delete/<int:post_id>/', views.delete_post, name='delete_post'),
     path('tracker', views.tracker, name='tracker'),
     path('delete_subject/<int:subject_id>/', views.delete_subject, name='delete_subject'),
-    path('add_topic/', views.add_topic, name='add_topic'),
+    path('add_topic', views.add_topic, name='add_topic'),
 ]

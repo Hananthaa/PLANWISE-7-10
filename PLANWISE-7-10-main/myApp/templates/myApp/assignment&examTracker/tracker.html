@@ -83,8 +83,11 @@
     <h2>Add New Topic</h2>
     <form id="addTopicForm" method="post" action="{% url 'add_topic' %}">
       {% csrf_token %}
-       <input type="text" name="topic" id="id_subject" required><br><br>
-      {{ topic_form.as_p }}
+      <input type="hidden" name="subject_id" id="modalSubjectId">
+      <label for="title" style="color: #000;">Title:</label><br>
+      <input type="text" name="title" id="title"><br>
+      <label for="content" style="color: #000;">Content:</label><br>
+      <input type="text" name="content" id="content"><br>
       <button type="submit">Save Topic</button>
     </form>
   </div>

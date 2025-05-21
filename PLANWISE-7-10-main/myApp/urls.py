@@ -26,4 +26,5 @@ urlpatterns = [
     path('tracker', views.tracker, name='tracker'),
     path('delete_subject/<int:subject_id>/', views.delete_subject, name='delete_subject'),
     path('add_topic', views.add_topic, name='add_topic'),
+    path('delete_topic/<int:topic_id>/', views.delete_topic, name='delete_topic'),
 ]

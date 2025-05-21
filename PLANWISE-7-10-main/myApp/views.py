@@ -388,3 +388,13 @@ def add_topic(request):
     else:
         # This should ideally not be accessed directly via GET in this setup
         return redirect('tracker')
+    
+def delete_topic(request, topic_id):
+    topic = get_object_or_404(Topic, pk=topic_id)
+
+    # Optional: Confirm before deleting on GET, only delete on POST
+    if request.method == 'POST':
+        topic.delete()
+        return redirect('tracker')
+
+    return HttpResponse("This view only accepts POST requests to delete a topic.")

@@ -48,7 +48,14 @@
         {% if sub.topics.all %}
           <ul>
             {% for topic in sub.topics.all %}
-              <li>{{ topic.title }}</li>
+            <li> {{ topic.title }} <input type="checkbox" id="vehicle1" name="vehicle1" value="Bike"> </li>
+              
+              
+            <form method="post" action="{% url 'delete_topic' topic.id %}">
+                {% csrf_token %}
+                <button type="submit">Delete {{ sub.topic }}</button>
+            </form>
+
             {% endfor %}
           </ul>
         {% else %}

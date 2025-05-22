@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 from django.urls import reverse
 from django.utils.text import slugify
 from django_ckeditor_5.fields import CKEditor5Field
+from django.db import models
 
 
 class Exam(models.Model):
@@ -65,5 +66,10 @@ class Comment(models.Model):
 
     def __str__(self):
         return f'Comment by {self.user.username} on {self.post.title}'
+
+
+class DailyNote(models.Model):
+    date = models.DateField()
+    content = models.TextField()
 
 

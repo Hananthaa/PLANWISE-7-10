@@ -21,6 +21,11 @@ import holidays
 from datetime import date, datetime, timedelta
 from calendar import HTMLCalendar
 
+from django.shortcuts import render
+from calendar import HTMLCalendar
+from datetime import datetime
+from .models import DailyNote
+
 @login_required
 def test(request):
     if request.method == 'POST':
@@ -348,3 +353,6 @@ def your_calendar_view(request):
     }
 
     return render(request, 'myApp/your_template.html', context)
+
+
+    

@@ -1,0 +1,108 @@
+{% extends "myApp/base2.html" %}
+{% block content %}
+{% load static %}
+{% load custom_filters %}
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Exam Tracker</title>
+  {% block extrahead %}
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <link rel="stylesheet" href="{% static 'css/trackerstyle.css' %}">
+  {% endblock %}
+</head>
+<body>
+    <br>
+  <button type="button" onclick="showInputPopup()">Add Exam</button>
+
+  <!-- Popup Form -->
+  <div id="inputPopup" class="popup">
+    <div class="popup-content">
+      <span class="close-button" onclick="closeInputPopup()">&times;</span>
+      <form method="post">
+        {% csrf_token %}
+        <label for="id_subject">Subject:</label><br> 
+        <input type="text" name="subject" id="id_subject" required><br><br>
+        
+
+        <label for="id_exam_date">Exam Date:</label><br>
+        <input type="date" name="exam_date" id="id_exam_date" required><br><br>
+        <p>(Days left)</p>
+
+        <button type="submit">Save Exam</button>
+      </form>
+
+    </div>
+  </div>
+
+  <hr>
+
+  <h3>Saved Exams:</h3>
+  {% if subject %}
+    <ul>
+      {% for sub in subject %}
+
+        <li>
+          Subject: {{ sub.subject }}<br>
+          Exam Date: {{ sub.exam_date }}<br>
+         <div class="countdown" id="countdown-{{sub.id}}">Loading countdown...</div>
+
+
+        <strong>Topics:</strong>
+        {% if sub.topics.all %}
+          <ul>
+            {% for topic in sub.topics.all %}
+            <li> {{ topic.title }} <input type="checkbox" class= topic> </li>
+              
+              
+            <form method="post" action="{% url 'delete_topic' topic.id %}">
+                {% csrf_token %}
+                <button type="submit">Delete {{ sub.topic }}</button>
+            </form>
+
+            {% endfor %}
+          </ul>
+        {% else %}
+          <p>No topics saved under this subject yet.</p>
+        {% endif %}
+
+        <button type="button" class="add-topic-btn" data-subject-id="{{ sub.id }}">Add Topic</button>
+
+          <!--Progress bar for topic-->
+          <div class="progress-container">
+            <div class="progress-bar">
+              <div class="progress-fill"></div>
+            </div>
+            <span id="progressText">0%</span>
+          </div>
+
+        <form method="post" action="{% url 'delete_subject' sub.id %}">
+            {% csrf_token %}
+            <button type="submit">Delete {{ sub.subject }}</button>
+        </form>
+
+
+        </li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p>No exams have been saved yet.</p>
+  {% endif %}
+
+  <div id="addTopicModal" class="modal">
+  <div class="modal-content">
+    <span class="close-button">&times;</span>
+    <form id="addTopicForm" method="post" action="{% url 'add_topic' %}">
+      {% csrf_token %}
+      <input type="hidden" name="subject_id" id="modalSubjectId">
+      <label for="title" style="color: #000;">Title:</label><br>
+      <input type="text" name="title" id="title"><br>
+      <button type="submit">Save Topic</button>
+    </form>
+  </div>
+</div>
+
+  <script src="{% static 'scripts.js' %}"></script>
+{% endblock %}
+

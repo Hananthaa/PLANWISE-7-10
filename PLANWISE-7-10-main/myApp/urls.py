@@ -30,4 +30,8 @@ urlpatterns = [
     path('music/', music_player, name='music_player'),
     path('calendar/<int:year>/<int:month>/', views.calendar_view, name='calendar'),
     path('calendar/', views.calendar_view, name='calendar'),  # fallback current month
+    path('tracker', views.tracker, name='tracker'), #tracker start
+    path('delete_subject/<int:subject_id>/', views.delete_subject, name='delete_subject'),
+    path('add_topic', views.add_topic, name='add_topic'),
+    path('delete_topic/<int:topic_id>/', views.delete_topic, name='delete_topic'), #tracker end
 ]

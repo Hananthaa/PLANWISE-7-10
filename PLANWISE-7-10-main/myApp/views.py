@@ -1,5 +1,5 @@
-from .models import ForumPost, Comment, Task, Exam
-from .forms import ExamForm
+from .models import ForumPost, Comment, Task, Exam, Subject, Topic
+from .forms import ExamForm, SubjectForm, TopicForm
 from .utils import get_prev_month, get_next_month
 
 from django.shortcuts import render, redirect, get_object_or_404
@@ -367,3 +367,59 @@ def your_calendar_view(request):
     }
 
     return render(request, 'myApp/your_template.html', context)
+
+#tracker
+def tracker(request):
+    print ("hi++++++++++++++++++++++++++++")
+    if request.method == 'POST':
+        print("Wowo post :O")
+        form = SubjectForm(request.POST)
+        if form.is_valid():
+            form.save()
+    else:
+        form = SubjectForm()
+    subject = Subject.objects.all()  # Retrieve all saved exams
+    return render(request, 'myapp/tracker.html',
+                  {'subject': subject})
+
+def display_exams(request):
+    exams = Exam.objects.all()  # Retrieve all Exam objects from the database
+    return render(request, 'display_exams.html', {'exams': exams})
+
+def delete_subject(request, subject_id):
+    subject = get_object_or_404(Subject, pk=subject_id)
+
+    # Optional: Confirm before deleting on GET, only delete on POST
+    if request.method == 'POST':
+        subject.delete()
+        return redirect('tracker')
+
+    # You can also render a simple confirmation template here
+    return HttpResponse("This view only accepts POST requests to delete an exam.")
+
+def add_topic(request):
+    if request.method == 'POST':
+        form = TopicForm(request.POST)
+        subject_id = request.POST.get('subject_id')
+        subject = get_object_or_404(Subject, pk=subject_id)
+        print (subject_id + '========================')
+        print (subject.subject + '--------------------------')
+        if form.is_valid():
+            topic = form.save(commit=False)
+            print (topic.title + '0000000000000000000000000000000000')
+            topic.subject = subject
+            topic.save()
+            return redirect('tracker') # Redirect back to the tracker page
+    else:
+        # This should ideally not be accessed directly via GET in this setup
+        return redirect('tracker')
+    
+def delete_topic(request, topic_id):
+    topic = get_object_or_404(Topic, pk=topic_id)
+
+    # Optional: Confirm before deleting on GET, only delete on POST
+    if request.method == 'POST':
+        topic.delete()
+        return redirect('tracker')
+
+    return HttpResponse("This view only accepts POST requests to delete a topic.")

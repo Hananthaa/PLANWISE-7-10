@@ -80,7 +80,7 @@ class Topic(models.Model):
     title = models.CharField(max_length=200)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    # Add other fields for your topic (content, etc.)
+    topiccomplete = models.BooleanField(default=False)
 
     def __str__(self):
         return f"{self.title} (under {self.subject.subject})"

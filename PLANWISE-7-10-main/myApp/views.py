@@ -389,12 +389,9 @@ def display_exams(request):
 def delete_subject(request, subject_id):
     subject = get_object_or_404(Subject, pk=subject_id)
 
-    # Optional: Confirm before deleting on GET, only delete on POST
     if request.method == 'POST':
         subject.delete()
         return redirect('tracker')
-
-    # You can also render a simple confirmation template here
     return HttpResponse("This view only accepts POST requests to delete an exam.")
 
 def add_topic(request):
@@ -409,17 +406,36 @@ def add_topic(request):
             print (topic.title + '0000000000000000000000000000000000')
             topic.subject = subject
             topic.save()
-            return redirect('tracker') # Redirect back to the tracker page
+            return redirect('tracker')
     else:
-        # This should ideally not be accessed directly via GET in this setup
         return redirect('tracker')
     
 def delete_topic(request, topic_id):
     topic = get_object_or_404(Topic, pk=topic_id)
 
-    # Optional: Confirm before deleting on GET, only delete on POST
     if request.method == 'POST':
         topic.delete()
         return redirect('tracker')
 
     return HttpResponse("This view only accepts POST requests to delete a topic.")
+
+#save topic
+def topic_complete(request, topic_id):
+    if request.method == 'POST':
+        print ("checkbox checked*********")
+        topic = get_object_or_404(Topic, pk=topic_id)
+        topic.topiccomplete = True
+        topic.save()
+        return redirect('tracker')
+    else:
+        return HttpResponse("Method Not Allowed", status=405)
+    
+def topic_uncomplete(request, topic_id):
+    if request.method == 'POST':
+        print ("checkbox unchecked*********")
+        topic = get_object_or_404(Topic, pk=topic_id)
+        topic.topiccomplete = False
+        topic.save()
+        return redirect('tracker')
+    else:
+        return HttpResponse("Method Not Allowed", status=405)

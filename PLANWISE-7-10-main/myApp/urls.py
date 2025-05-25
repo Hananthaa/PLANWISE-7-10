@@ -34,4 +34,6 @@ urlpatterns = [
     path('delete_subject/<int:subject_id>/', views.delete_subject, name='delete_subject'),
     path('add_topic', views.add_topic, name='add_topic'),
     path('delete_topic/<int:topic_id>/', views.delete_topic, name='delete_topic'), #tracker end
+    path('topic_completion/<int:topic_id>/', views.topic_complete, name='topic_complete'),
+    path('topic_uncompletion/<int:topic_id>/', views.topic_uncomplete, name='topic_uncomplete'),
 ]

@@ -154,22 +154,22 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 /*details for exam*/
-const inputPopup = document.getElementById('inputPopup');
 
-        function showInputPopup() {
-            inputPopup.style.display = 'block';
-        }
+function showInputPopup() {
+  inputPopup = document.getElementById('inputPopup');
+  inputPopup.style.display = 'block';
+}
 
-        function closeInputPopup() {
-            inputPopup.style.display = 'none';
-        }
+function closeInputPopup() {
+    inputPopup.style.display = 'none';
+}
 
-        function openExamDetails(subject, date, id) {
-            document.getElementById('popup-subject').textContent = subject;
-            document.getElementById('popup-date').textContent = date;
-            // You might want to store the ID in the popup for further actions
-            showInputPopup();
-        }
+function openExamDetails(subject, date, id) {
+    document.getElementById('popup-subject').textContent = subject;
+    document.getElementById('popup-date').textContent = date;
+    // You might want to store the ID in the popup for further actions
+    showInputPopup();
+}
         
 /*add topics*/
 document.addEventListener('DOMContentLoaded', () => {
@@ -197,3 +197,23 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 });
+
+/*progress bar func*/
+
+/*const progressFill = document.getElementById('progressFill');
+const progressText = document.getElementById('progressText');*/
+
+function updateProgressBar(id) { 
+    console.log
+    checkboxes = document.querySelectorAll('.topic_checkbox-'+ id);
+    progressFill = document.getElementById('progressFill-' + id);
+    progressText = document.getElementById('progressText-' + id);
+    totalCheckboxes = checkboxes.length;
+
+    console.log ("Bar updated...")
+    checkedCount = document.querySelectorAll('.topic_checkbox-' + id +':checked').length;
+    progressPercentage = (checkedCount / totalCheckboxes) * 100;
+
+    progressFill.style.width = progressPercentage + '%';
+    progressText.textContent = Math.round(progressPercentage) + '%';
+}

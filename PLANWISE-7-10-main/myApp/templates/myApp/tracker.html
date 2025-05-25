@@ -10,6 +10,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <link rel="stylesheet" href="{% static 'css/trackerstyle.css' %}">
+  <script src="{% static 'scripts.js' %}"></script>
   {% endblock %}
 </head>
 <body>
@@ -25,7 +26,6 @@
         <label for="id_subject">Subject:</label><br> 
         <input type="text" name="subject" id="id_subject" required><br><br>
         
-
         <label for="id_exam_date">Exam Date:</label><br>
         <input type="date" name="exam_date" id="id_exam_date" required><br><br>
         <p>(Days left)</p>
@@ -44,6 +44,8 @@
       {% for sub in subject %}
 
         <li>
+
+          <!--Subject-->
           Subject: {{ sub.subject }}<br>
           Exam Date: {{ sub.exam_date }}<br>
          <div class="countdown" id="countdown-{{sub.id}}">Loading countdown...</div>
@@ -53,14 +55,44 @@
         {% if sub.topics.all %}
           <ul>
             {% for topic in sub.topics.all %}
-            <li> {{ topic.title }} <input type="checkbox" class= topic> </li>
-              
-              
+            
+            <li>   
+
+              {{ topic.title }}
+              {% if topic.topiccomplete %}
+
+
+              <!--checkbox (COMPLETE)-->
+              <form method="post" action="{% url 'topic_uncomplete' topic.id %}">
+                {% csrf_token %}
+                <input type="checkbox" name = "is_complete" checked
+                                          class= "topic_checkbox-{{sub.id}}" value= {{topic.topiccomplete}} 
+                                          onchange= "updateProgressBar({{sub.id}}), this.form.submit()" 
+                                          id="topic_checkbox-{{sub.id}}">
+               <!--don't touch the red squigggly >:(-->                            
+              </form>
+             
+              {% else %} 
+              <!--checkbox (UNCOMPLETE)-->
+              <form method="post" action="{% url 'topic_complete' topic.id %}">
+                {% csrf_token %}
+                <input type="checkbox" name = "is_complete" 
+                                          class= "topic_checkbox-{{sub.id}}" value= {{topic.topiccomplete}} 
+                                          onchange= "updateProgressBar({{sub.id}}), this.form.submit()" 
+                                          id="topic_checkbox-{{sub.id}}">
+                <!--don't touch the red squigggly >:(-->
+              </form>
+              {% endif %}
+
+
+
+            </li>
+            <!--delete topic-->
             <form method="post" action="{% url 'delete_topic' topic.id %}">
                 {% csrf_token %}
                 <button type="submit">Delete {{ sub.topic }}</button>
             </form>
-
+            </li> 
             {% endfor %}
           </ul>
         {% else %}
@@ -72,10 +104,14 @@
           <!--Progress bar for topic-->
           <div class="progress-container">
             <div class="progress-bar">
-              <div class="progress-fill"></div>
+              <div class="progress-fill" id="progressFill-{{sub.id}}"></div>
             </div>
-            <span id="progressText">0%</span>
+            <span id="progressText-{{sub.id}}">0%</span>
           </div>
+
+        <script>
+          updateProgressBar({{sub.id}});
+        </script>
 
         <form method="post" action="{% url 'delete_subject' sub.id %}">
             {% csrf_token %}
@@ -90,19 +126,21 @@
     <p>No exams have been saved yet.</p>
   {% endif %}
 
+    <!--add topic-->
   <div id="addTopicModal" class="modal">
-  <div class="modal-content">
-    <span class="close-button">&times;</span>
-    <form id="addTopicForm" method="post" action="{% url 'add_topic' %}">
-      {% csrf_token %}
-      <input type="hidden" name="subject_id" id="modalSubjectId">
-      <label for="title" style="color: #000;">Title:</label><br>
-      <input type="text" name="title" id="title"><br>
-      <button type="submit">Save Topic</button>
-    </form>
+    <div class="modal-content">
+      <span class="close-button">&times;</span>
+      <form id="addTopicForm" method="post" action="{% url 'add_topic' %}">
+        {% csrf_token %}
+        <input type="hidden" name="subject_id" id="modalSubjectId">
+        <label for="title" style="color: #000;">Title:</label><br>
+        <input type="text" name="title" id="title"><br>
+        <button type="submit">Save Topic</button>
+      </form>
+    </div>
   </div>
-</div>
 
-  <script src="{% static 'scripts.js' %}"></script>
+          
+
 {% endblock %}
 

@@ -238,3 +238,49 @@ transition: width 0.3s ease-in-out; /* Smooth animation */
 display: block;
 margin-bottom: 5px;
 }
+
+.accordion {
+    background-color: black;
+    color: white; 
+    border: 1px solid #333; 
+}
+
+
+.accordion-item {
+    background-color: black; 
+    color: white; 
+    border: 1px solid #333; /
+    margin-bottom: 5px; 
+}
+
+.accordion-header {
+    background-color: black; 
+    border-bottom: 1px solid #444; 
+}
+
+.accordion-button {
+    background-color: black; 
+    color: white; 
+    border: none; 
+    transition: none !important; 
+}
+
+.accordion-button:focus,
+.accordion-button:hover {
+    background-color: #333; 
+    color: #eee; 
+    box-shadow: none;
+    transition: none !important; 
+}
+
+.accordion-button:not(.collapsed) {
+    background-color: #222; 
+    color: #fff; 
+    box-shadow: none;
+}
+
+.accordion-body {
+    background-color: #1a1a1a; 
+    color: white; 
+    border-top: 1px solid #444; 
+}

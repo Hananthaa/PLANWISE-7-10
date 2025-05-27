@@ -45,7 +45,7 @@
     {% for sub in subject %}
       <div class="accordion-item">
         <h2 class="accordion-header" id="heading{{ sub.id }}">
-          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+          <button class="accordion-header" type="button" data-bs-toggle="collapse"
                   data-bs-target="#flush-collapse{{ sub.id }}" aria-expanded="false" 
                   aria-controls="flush-collapse{{ sub.id }}">
             {{ sub.subject|upper}}

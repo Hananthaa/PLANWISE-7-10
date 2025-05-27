@@ -43,14 +43,33 @@
   {% if subject %}
   <div class="accordion accordion-flush" id="accordionFlushExample">
     {% for sub in subject %}
+      
+      
+
       <div class="accordion-item">
-        <h2 class="accordion-header" id="heading{{ sub.id }}">
+        
+        <p class="accordion-header" id="heading{{ sub.id }}">
+          <table>
+          <tr><td>
           <button class="accordion-header" type="button" data-bs-toggle="collapse"
                   data-bs-target="#flush-collapse{{ sub.id }}" aria-expanded="false" 
                   aria-controls="flush-collapse{{ sub.id }}">
             {{ sub.subject|upper}}
-          </button>
-        </h2>
+          </button> &nbsp;&nbsp;&nbsp;
+          </td>
+
+          <td>
+          <!--progress bar-->
+          <div class="progress-container">
+              <div class="progress-bar">
+                <div class="progress-fill" id="progressFill-{{ sub.id }}"></div>
+              </div>
+              <span id="progressText-{{ sub.id }}">0%</span>
+          </div>
+          </td></tr>
+          </table>
+        </p>
+
         <div id="flush-collapse{{ sub.id }}" class="accordion-collapse collapse" 
             aria-labelledby="heading{{ sub.id }}" data-bs-parent="#accordionFlushExample">
           <div class="accordion-body">
@@ -98,13 +117,6 @@
                 {% endif %}
 
                 <button type="button" class="add-topic-btn" data-subject-id="{{ sub.id }}">Add Topic</button>
-
-                <div class="progress-container">
-                  <div class="progress-bar">
-                    <div class="progress-fill" id="progressFill-{{ sub.id }}"></div>
-                  </div>
-                  <span id="progressText-{{ sub.id }}">0%</span>
-                </div>
 
                 <script>
                   updateProgressBar({{ sub.id }});

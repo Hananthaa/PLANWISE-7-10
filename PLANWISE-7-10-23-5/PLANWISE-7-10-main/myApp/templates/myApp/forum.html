@@ -1,0 +1,52 @@
+{% extends "myApp/base2.html" %}
+{% block content %}
+<head>
+  <meta charset="UTF-8">
+  <title>Forum</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    body {
+      background-color: #121212;
+      color: #ffffff;
+    }
+    .forum-container {
+      max-width: 800px;
+      margin: 50px auto;
+    }
+    .post-link {
+      text-decoration: none;
+      color: #0dcaf0;
+    }
+    .post-link:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <div class="forum-container">
+    <h2 class="text-center mb-4">Forum Discussions</h2>
+    <div class="d-flex justify-content-end mb-3">
+      <a href="{% url 'create_post' %}" class="btn btn-success">New Post</a>
+    </div>
+    <!-- Search Bar -->
+<form method="GET" action="" class="mb-4">
+  <div class="input-group">
+    <input type="text" name="q" class="form-control" placeholder="Search posts..." value="{{ query|default:'' }}">
+    <button class="btn btn-outline-info" type="submit">Search</button>
+  </div>
+</form>
+    <ul class="list-group">
+      {% for post in posts %}
+        <li class="list-group-item bg-dark text-white mb-2">
+          <a href="{% url 'post_detail' post.id %}" class="post-link">
+            <strong>{{ post.title }}</strong>
+          </a>
+          <div class="small mt-1">by {{ post.user.username }} | {{ post.created_at|date:"M d, Y H:i" }}</div>
+        </li>
+      {% empty %}
+        <li class="list-group-item bg-dark text-white">No posts yet.</li>
+      {% endfor %}
+    </ul>
+  </div>
+</body>
+{% endblock %}

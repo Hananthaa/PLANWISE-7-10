@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
+
+    <style>
+      /* Base Styles */
+      body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background-image: url('');
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        min-height: 100vh;
+        margin: 0;
+        padding: 0;
+        color: #333;
+      }
+
+      /* Navbar Container */
+      .centered-navbar-box {
+        max-width: 960px;
+        margin: 15px auto;
+        border-radius: 12px;
+        background-color: #f9f9f9cc;
+        box-shadow: 0 5px 25px rgba(0, 0, 0, 0.15);
+        padding: 20px 30px;
+        position: relative;
+        backdrop-filter: saturate(180%) blur(8px);
+      }
+
+      /* Navbar Styles */
+      .navbar-brand {
+        font-weight: 700;
+        font-size: 1.8rem;
+        color: #2a4d69 !important;
+        letter-spacing: 1.2px;
+        user-select: none;
+      }
+
+      .nav-link {
+        color: #4a4a4a !important;
+        margin-right: 25px;
+        font-weight: 600;
+        transition: color 0.3s ease;
+        user-select: none;
+      }
+
+      .nav-link:hover,
+      .nav-link.active {
+        color: #d1495b !important;
+        font-weight: 700;
+      }
+
+      .btn-outline-primary {
+        border-radius: 25px;
+        border: 2px solid #2a4d69;
+        color: #2a4d69;
+        font-weight: 600;
+        padding: 8px 22px;
+        margin-left: 10px;
+        transition: background-color 0.3s ease, color 0.3s ease;
+      }
+
+      .btn-outline-primary:hover {
+        background-color: #2a4d69;
+        color: #f0f0f0;
+      }
+
+      /* Hero Section */
+      .hero-content {
+        text-align: center;
+        padding-top: 160px;
+        color: #f0f0f0;
+        text-shadow: 1px 1px 8px rgba(0, 0, 0, 0.65);
+        user-select: none;
+      }
+
+      .hero-content h1 {
+        font-size: 4.5rem;
+        font-weight: 700;
+        margin-bottom: 15px;
+        font-family: 'Segoe UI Black', Tahoma, Geneva, Verdana, sans-serif;
+      }
+
+      .hero-content em {
+        color: #d1495b;
+        font-style: normal;
+      }
+
+      .hero-content p {
+        font-size: 1.7rem;
+        margin-bottom: 45px;
+        font-weight: 500;
+        letter-spacing: 0.05em;
+      }
+
+      /* Features Section */
+      #features {
+        max-width: 1100px;
+        margin: 60px auto 100px;
+        padding: 0 20px;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-around;
+        gap: 40px;
+      }
+
+      .feature-card {
+        background: rgba(255, 255, 255, 0.95);
+        border-radius: 15px;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+        padding: 30px 25px;
+        width: 320px;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        text-align: center;
+        user-select: none;
+      }
+
+      .feature-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 15px 40px rgba(209, 73, 91, 0.4);
+      }
+
+      .feature-icon {
+        font-size: 3.5rem;
+        color: #d1495b;
+        margin-bottom: 18px;
+        transition: color 0.3s ease;
+      }
+
+      .feature-card:hover .feature-icon {
+        color: #2a4d69;
+      }
+
+      .feature-title {
+        font-weight: 700;
+        font-size: 1.5rem;
+        margin-bottom: 15px;
+        color: #2a4d69;
+      }
+
+      .feature-desc {
+        font-weight: 500;
+        font-size: 1rem;
+        color: #555;
+        line-height: 1.4;
+      }
+
+      /* Call to Action Wrapper to center it */
+      .cta-wrapper {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 90vh;
+        padding-top: 60px;
+      }
+
+      /* Call to Action Section */
+      #cta-section {
+        background: rgba(209, 73, 91, 0.15);
+        text-align: center;
+        padding: 60px 30px;
+        border-radius: 20px;
+        max-width: 700px;
+        width: 100%;
+        box-shadow: 0 10px 30px rgba(209, 73, 91, 0.2);
+        user-select: none;
+      }
+
+      #cta-section h2 {
+        font-size: 2.8rem;
+        font-weight: 700;
+        color: #d1495b;
+        margin-bottom: 25px;
+      }
+
+      #cta-section p {
+        font-size: 1.2rem;
+        font-weight: 500;
+        margin-bottom: 35px;
+        color: #333;
+      }
+
+      #cta-section .btn-primary {
+        font-weight: 700;
+        padding: 14px 36px;
+        font-size: 1.1rem;
+        border-radius: 30px;
+        box-shadow: 0 6px 18px rgba(209, 73, 91, 0.45);
+        transition: box-shadow 0.3s ease, transform 0.3s ease;
+        user-select: none;
+      }
+
+      #cta-section .btn-primary:hover {
+        box-shadow: 0 10px 30px rgba(209, 73, 91, 0.7);
+        transform: scale(1.07);
+      }
+
+      /* Footer */
+      footer {
+        background: #2a4d69cc;
+        color: #eee;
+        text-align: center;
+        padding: 20px 15px;
+        font-weight: 500;
+        user-select: none;
+      }
+
+      footer a {
+        color: #f0f0f0;
+        margin: 0 12px;
+        font-size: 1.3rem;
+        transition: color 0.3s ease;
+      }
+
+      footer a:hover {
+        color: #cdc4c5;
+        text-decoration: none;
+      }
+
+      /* Responsive */
+      @media (max-width: 991px) {
+        #features {
+          flex-direction: column;
+          align-items: center;
+          gap: 30px;
+        }
+        .feature-card {
+          width: 90%;
+        }
+        .hero-content h1 {
+          font-size: 3.4rem;
+        }
+      }
+      @media (max-width: 480px) {
+        .hero-content h1 {
+          font-size: 2.8rem;
+        }
+        .hero-content p {
+          font-size: 1.3rem;
+          margin-bottom: 25px;
+        }
+        .centered-navbar-box {
+          padding: 15px 20px;
+        }
+      }
+    </style>
+
+    <title>PLANWISE</title>
+  </head>
+
+  <body>
+    <!-- Navbar in white rectangle box at the top -->
+    <div class="centered-navbar-box">
+      <nav class="navbar navbar-expand-lg navbar-light bg-transparent">
+        <a class="navbar-brand" href="#">PLANWISE</a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-toggle="collapse"
+          data-target="#navbarSupportedContent"
+          aria-controls="navbarSupportedContent"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse justify-content-between" id="navbarSupportedContent">
+          <ul class="navbar-nav mx-auto">
+            <li class="nav-item active">
+              <a class="nav-link" href="{% url 'home' %}">Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'login' %}">Login</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'signup' %}">Sign Up</a>
+            </li>
+          </ul>
+        </div>
+      </nav>
+    </div>
+
+    <!-- Hero section -->
+    <div class="hero-content">
+      <h1>Welcome to <em>PLANWISE</em></h1>
+      <p>Your smart way to organize and manage your time effectively</p>
+      <a href="{% url 'signup' %}" class="btn btn-outline-primary btn-lg">Get Started with Register</a>
+    </div>
+
+    <!-- Centered Call to Action Section -->
+    <div class="cta-wrapper">
+      <section id="cta-section">
+        <h2>Ready to boost your productivity?</h2>
+        <p>Join thousands of users managing their time smarter with PLANWISE.</p>
+        <a href="{% url 'signup' %}" class="btn btn-primary">Create Your Account Now</a>
+      </section>
+    </div>
+
+    <!-- Optional JavaScript -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"></script>
+  </body>
+</html>

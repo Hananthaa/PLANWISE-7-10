@@ -1,0 +1,229 @@
+{% extends "myApp/base2.html" %}
+{% block content %}
+{% load static %}
+{% load custom_filters %}
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Exam Tracker</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <link rel="stylesheet" href="{% static 'style.css' %}">
+  <style>
+    body {
+      background-color: black;
+      color: white;
+      font-family: Arial, sans-serif;
+    }
+
+    .progress-container {
+      width: 100%;
+      background-color: #555;
+      border-radius: 20px;
+      overflow: hidden;
+      margin: 10px 0;
+    }
+
+    .progress-bar {
+      width: 100%;
+      background-color: #ddd;
+      height: 20px;
+      border-radius: 20px;
+      position: relative;
+    }
+
+    .progress-fill {
+      height: 100%;
+      width: 0%;
+      transition: width 0.5s ease-in-out;
+    }
+
+    button {
+      background-color: #333;
+      color: white;
+      padding: 8px 16px;
+      border: none;
+      border-radius: 5px;
+      margin: 5px 0;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #444;
+    }
+
+    input, select, textarea {
+      color: black;
+    }
+
+    .popup {
+      display: none;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background-color: #222;
+      padding: 20px;
+      border-radius: 10px;
+      z-index: 1000;
+      color: black;
+    }
+
+    .popup-content input,
+    .popup-content select,
+    .popup-content textarea {
+      color: black;
+    }
+
+    .close-button {
+      float: right;
+      cursor: pointer;
+      font-size: 20px;
+      color: white;
+    }
+
+    canvas {
+      display: block;
+      margin: 0 auto 30px auto;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Bar Chart -->
+  <canvas id="examBarChart" width="400" height="400"></canvas>
+
+  <!-- Add Exam Button -->
+  <button type="button" onclick="showInputPopup()">Add Exam</button>
+
+  <!-- Popup Form -->
+  <div id="inputPopup" class="popup">
+    <div class="popup-content">
+      <span class="close-button" onclick="closeInputPopup()">&times;</span>
+      <form method="post">
+        {% csrf_token %}
+        <label for="id_subject">Subject:</label><br>
+        <input type="text" name="subject" id="id_subject" required><br><br>
+
+        <label for="id_exam_date">Exam Date:</label><br>
+        <input type="date" name="exam_date" id="id_exam_date" required><br><br>
+
+        <label for="id_mark">Mark (%):</label><br>
+        <input type="number" name="mark" id="id_mark" min="0" max="100"><br><br>
+
+        <button type="submit">Save Exam</button>
+      </form>
+    </div>
+  </div>
+
+  <hr>
+
+  <h3>Saved Exams:</h3>
+  {% if exams %}
+    <ul>
+      {% for exam in exams %}
+        <li>
+          Subject: {{ exam.subject }}<br>
+          Exam Date: {{ exam.exam_date }}<br>
+          {% if exam.mark %}
+            Mark: {{ exam.mark }}%
+          {% else %}
+            Mark: <em>Not entered</em>
+          {% endif %}
+
+          <div class="progress-container">
+            <div class="progress-bar">
+              <div class="progress-fill"
+                   style="width: {{ exam.mark|default:0 }}%; background-color: {{ subject_colors|get_item:exam.subject }};"></div>
+            </div>
+            <span>{{ exam.mark|default:"0" }}%</span>
+          </div>
+
+          <form method="post" action="{% url 'delete_exam' exam.id %}">
+            {% csrf_token %}
+            <button type="submit">Delete</button>
+          </form>
+        </li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p>No exams have been saved yet.</p>
+  {% endif %}
+
+  <script>
+    const inputPopup = document.getElementById('inputPopup');
+
+    function showInputPopup() {
+      inputPopup.style.display = 'block';
+    }
+
+    function closeInputPopup() {
+      inputPopup.style.display = 'none';
+    }
+
+    // Prepare data for bar chart
+    const barLabels = [
+      {% for exam in exams %}
+        "{{ exam.subject }}",
+      {% endfor %}
+    ];
+
+    const barData = [
+      {% for exam in exams %}
+        {{ exam.mark|default:0 }},
+      {% endfor %}
+    ];
+
+    const subjectColorMap = {
+      {% for subject, color in subject_colors.items %}
+        "{{ subject }}": "{{ color }}",
+      {% endfor %}
+    };
+
+    const barColors = barLabels.map(subject => subjectColorMap[subject]);
+
+    const ctx = document.getElementById('examBarChart').getContext('2d');
+    new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: barLabels,
+        datasets: [{
+          label: '',
+          data: barData,
+          backgroundColor: barColors,
+          borderColor: barColors,
+          borderWidth: 1
+        }]
+      },
+      options: {
+        scales: {
+          y: {
+            beginAtZero: true,
+            max: 100,
+            ticks: {
+              color: 'white'
+            }
+          },
+          x: {
+            ticks: {
+              color: 'white'
+            }
+          }
+        },
+        plugins: {
+          legend: {
+            labels: {
+              color: 'white'
+            }
+          }
+        }
+      }
+    });
+  </script>
+</body>
+{% endblock %}
+
+

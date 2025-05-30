@@ -42,4 +42,5 @@ urlpatterns = [
     path('delete_topic/<int:topic_id>/', views.delete_topic, name='delete_topic'), #tracker end
     path('topic_completion/<int:topic_id>/', views.topic_complete, name='topic_complete'),
     path('topic_uncompletion/<int:topic_id>/', views.topic_uncomplete, name='topic_uncomplete'),
+    path('timerpet/', views.timer, name='timerpet')
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -549,3 +549,18 @@ def topic_uncomplete(request, topic_id):
         return redirect('tracker')
     else:
         return HttpResponse("Method Not Allowed", status=405)
+
+def timer(request):
+    if request.method == 'POST':
+        print ("checkbox unchecked*********")
+        topic = get_object_or_404(Topic, pk=topic_id)
+        topic.topiccomplete = False
+        topic.save()
+        return redirect('tracker')
+    else:
+        return HttpResponse("Method Not Allowed", status=405)
+
+def timer(request):
+    print ("hi++++++++++++++++++++++++++++")
+
+    return render(request, 'myApp/timerpet.html')

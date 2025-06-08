@@ -29,7 +29,8 @@ class Task(models.Model):
 class HabitRecord(models.Model):
     task = models.ForeignKey(Task, on_delete=models.CASCADE)
     date = models.DateField()
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    #user = models.ForeignKey(User, on_delete=models.CASCADE)
+    #ask alisha ^
 
     class Meta:
         unique_together = ('task', 'date')
@@ -96,3 +97,11 @@ class Topic(models.Model):
 
     def __str__(self):
         return f"{self.title} (under {self.subject.subject})"
+
+#pet timer
+class Pet(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=False, blank=False)
+    pet = models.CharField(max_length=200)
+
+    def __str__(self):
+        return self.pet

@@ -1,6 +1,7 @@
 //accordian
 var acc = document.getElementsByClassName ("accordion");
 var i;
+var timeleft = 0; 
 
 for (i = 0; i < acc.length; i++) {
   acc[i].addEventListener("click", function() {
@@ -217,65 +218,3 @@ function updateProgressBar(id) {
     progressFill.style.width = progressPercentage + '%';
     progressText.textContent = Math.round(progressPercentage) + '%';
 }
-
-//timer
-
-const startEl = document.getElementById("start");
-const stopEl = document.getElementById("stop");
-const resetEl = document.getElementById("reset");
-const timerEl = document.getElementById("timer");
-const setEl = document.getElementById("setEl");
-const inputTimerMin = document.getElementById("inputTimerMin");
-const inputTimerSec = document.getElementById("inputTimerSec");
-
-function isIntegerString(str) {
-    return /^-?\d+$/.test(str);
-  }
-
-//start here work
-function setTimer() {
-
-    if (isIntegerString(inputTimerMin.value) && isIntegerString(inputTimerSec.value)) {
-        timeleft = parseInt(inputTimerMin.value*60) + parseInt(inputTimerSec.value);
-        
-      } else {
-        timerleft = 0;
-      } 
-
-    updateTimer();
-}
-
-
-function updateTimer() {
-    console.log ("====== function called" + timeleft);
-    let minutes = Math.floor(timeleft / 60);
-    let seconds = timeleft % 60;
-    let formattedTime = `${minutes.toString().padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`;
-
-    timerEl.innerHTML = formattedTime;
-}
-
-function startTimer(){
-    interval = setInterval(() => {
-        timeleft--;
-        updateTimer();
-        if(timeleft === 0) {
-            clearInterval(interval);
-            alert("Time's up!");
-            timeLeft = 60;
-        }
-    }, 1000);
-}
-
-function stopTimer(){
-    clearInterval(interval);
-}
-
-function resetTimer(){
-    clearInterval(interval);
-    setTimer();
-}
-
-startEl.addEventListener("click", startTimer);
-stopEl.addEventListener("click", stopTimer);
-resetEl.addEventListener("click", resetTimer);

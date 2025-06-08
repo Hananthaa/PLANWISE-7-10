@@ -1,5 +1,5 @@
-from .models import ForumPost, Comment, Exam, Subject, Topic, Task
-from .forms import ExamForm, SubjectForm, TopicForm
+from .models import ForumPost, Comment, Exam, Subject, Topic, Task, Pet
+from .forms import ExamForm, SubjectForm, TopicForm, ChangePet
 from .utils import get_prev_month, get_next_month
 
 from django.shortcuts import render, redirect, get_object_or_404
@@ -35,6 +35,9 @@ from myApp.models import Task, HabitRecord
 from collections import Counter
 
 from collections import Counter
+
+from myApp.models import Pet
+
 
 @login_required
 def habit_tracker(request):
@@ -562,5 +565,37 @@ def timer(request):
 
 def timer(request):
     print ("hi++++++++++++++++++++++++++++")
-
     return render(request, 'myApp/timerpet.html')
+
+#Change pet
+def changepet(request):
+    if request.method == 'POST':
+        print("Wowo post for pet :OOOOOOOOOOOOOOOOOOOOOO")
+        user_id_post = request.POST.get('user') #find user id
+        pet_post = request.POST.get('pet') #post pet change user choose
+        pet_check = Pet.objects.filter(user_id=user_id_post).first() #current user pet 
+        form = ChangePet(request.POST)
+
+        if form.is_valid():
+            
+            if pet_check: #see if user have pet record 
+                print(user_id_post + "QQQQQQQQQQQQQQQQQQqqq")
+                pet = Pet.objects.get(user_id=user_id_post) #get record for the user (ex. user 9)
+                pet.pet = pet_post
+                pet.save(update_fields=['pet'])
+            else: 
+                print("pet form saved!!!!!!!!!!!!!1")
+                form.save()
+        else:
+            print("not valid888888888888888888888888")
+            print(form.errors)
+    return redirect("/timerpet")
+
+def getpet(request, user_id):
+    if request.method == 'GET':
+        print("Wowo get pet :kkkkkkkkkkkkkkkkkkkkk")
+        pet = Pet.objects.get(user_id=user_id)
+        return HttpResponse(pet.pet)
+
+
+#Qury table get id

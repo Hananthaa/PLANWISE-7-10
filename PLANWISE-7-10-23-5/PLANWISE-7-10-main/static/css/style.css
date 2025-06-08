@@ -53,6 +53,14 @@ button:hover{
 
 body {
     background: lightblue url("/static/images/catzzz.gif") no-repeat fixed center;
-    background-size: 50%;
-    background-position: 50px 50px;
+    background-size: 40%;
+    background-position: 0px 70px;
+}
+
+.container4pet{
+    background: grey;
+    margin: 0 auto;
+    max-width: 400px;
+    text-align: center;
+    padding : 20px; 
 }

@@ -1,5 +1,5 @@
 from django import forms
-from .models import Exam, Subject, Topic
+from .models import Exam, Subject, Topic, Pet
 
 class ExamForm(forms.ModelForm):
     class Meta:
@@ -16,3 +16,8 @@ class TopicForm(forms.ModelForm):
     class Meta:
         model = Topic
         fields = ['title']
+
+class ChangePet(forms.ModelForm):
+    class Meta:
+        model = Pet
+        fields = ['pet', 'user']

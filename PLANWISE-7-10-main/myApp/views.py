@@ -44,6 +44,9 @@ from datetime import date
 from datetime import datetime
 from django.utils import timezone
 
+from django.shortcuts import render
+import random
+
 @login_required
 def habit_tracker(request):
     user = request.user
@@ -610,3 +613,29 @@ def topic_uncomplete(request, topic_id):
         return redirect('tracker')
     else:
         return HttpResponse("Method Not Allowed", status=405)
+
+
+
+def your_calendar_view(request):
+    # existing code ...
+    
+    motivational_quotes = [
+        "Believe in yourself and all that you are.",
+        "Your limitation—it’s only your imagination.",
+        "Push yourself, because no one else is going to do it for you.",
+        "Great things never come from comfort zones.",
+        "Dream it. Wish it. Do it.",
+        "Success doesn’t just find you. You have to go out and get it.",
+        "The harder you work for something, the greater you’ll feel when you achieve it.",
+        "Don’t stop when you’re tired. Stop when you’re done.",
+        "Wake up with determination. Go to bed with satisfaction.",
+        "Do something today that your future self will thank you for."
+    ]
+    
+    random_quote = random.choice(motivational_quotes)
+
+    context = {
+        # your existing context variables...
+        "quote": random_quote,
+    }
+    return render(request, 'myApp/your_template_name.html', context)

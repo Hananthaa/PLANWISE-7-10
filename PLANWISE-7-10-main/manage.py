@@ -5,7 +5,7 @@ import sys
 
 
 def main():
-    os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'myProject.settings')  # Or 'myProject.settings' — pick the right one
+    os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'myProject.settings')  # Confirm this matches your project folder
     try:
         from django.core.management import execute_from_command_line
     except ImportError as exc:
@@ -18,4 +18,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-

@@ -1,0 +1,65 @@
+{% extends "myApp/base2.html" %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>User List</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    body {
+      background-color: #121212;
+      color: #fff;
+    }
+    .form-container {
+      max-width: 700px;
+      margin: 50px auto;
+    }
+    .form-control,
+    .btn,
+    .list-group-item {
+      background-color: #1e1e1e;
+      color: #fff;
+      border-color: #333;
+    }
+    .form-control:focus {
+      background-color: #1e1e1e;
+      color: #fff;
+    }
+    .btn-outline-light {
+      border-color: #555;
+      color: #fff;
+    }
+    .btn-outline-light:hover {
+      background-color: #0d6efd;
+      border-color: #0d6efd;
+    }
+    .list-group-item {
+      border: 1px solid #2c2c2c;
+    }
+  </style>
+</head>
+<body>
+  <div class="form-container">
+    <h3 class="mb-4 text-center">👤 Select a User to Chat</h3>
+
+    <!-- Search Form -->
+    <form method="get" class="mb-3 d-flex">
+      <input type="text" name="q" class="form-control me-2" placeholder="Search by username or name..." value="{{ query }}">
+      <button type="submit" class="btn btn-outline-light">Search</button>
+    </form>
+
+    <ul class="list-group">
+      {% for user in users %}
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+          <span>{{ user.username }}</span>
+          <a href="{% url 'chat' user.username %}" class="btn btn-sm btn-primary">Chat</a>
+        </li>
+      {% empty %}
+        <li class="list-group-item text-center">No users found.</li>
+      {% endfor %}
+    </ul>
+  </div>
+</body>
+</html>
+{% endblock %}

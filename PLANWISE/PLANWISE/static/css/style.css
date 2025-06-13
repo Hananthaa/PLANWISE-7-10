@@ -1,0 +1,66 @@
+.container{
+    margin: 0 auto;
+    max-width: 400px;
+    text-align: center;
+    padding : 20px;
+    font-family: Arial, sans-serif;
+}
+
+.right {
+    text-align: right;
+  }
+
+.title{
+    font-size: 36px;
+    margin-bottom: 10px;
+    color: #333;
+}
+
+.timer{
+    font-size: 72px;
+    margin-bottom: 30px;
+    color: #000000;
+}
+
+.button{
+    font-size: 20px;
+    padding: 10px 20px;
+    margin: 10px;
+    color: rgb(153, 0, 255);
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    text-transform: uppercase;
+    transition: opacity 0.3s
+    ease-in-out;
+}
+
+button:hover{
+    background-color: #555555;
+}
+
+#start{
+    background-color: chartreuse;
+}
+
+#stop{
+    background-color: red;
+}
+
+#reset{
+    background-color: blue;
+}
+
+body {
+    background: lightblue url("/static/images/catzzz.gif") no-repeat fixed center;
+    background-size: 40%;
+    background-position: 0px 70px;
+}
+
+.container4pet{
+    background: grey;
+    margin: 0 auto;
+    max-width: 400px;
+    text-align: center;
+    padding : 20px;
+}

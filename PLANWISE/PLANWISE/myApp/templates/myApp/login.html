@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Login - PLANWISE</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap');
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0;
+      padding: 0;
+      height: 100vh;
+      color: #fff;
+      background: url('https://marketplace.canva.com/EAFekpb5NK0/1/0/1600w/canva-dark-modern-photo-mountain-and-sky-desktop-wallpaper-5ixgVU5XGxc.jpg') no-repeat center center fixed;
+      background-size: cover;
+      padding-top: 80px;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+    }
+
+    .container {
+      background: rgba(0, 0, 0, 0.85);
+      padding: 45px 50px 40px;
+      border-radius: 20px;
+      width: 360px;
+      margin: 140px 20px 40px;
+      box-shadow: 0 0 35px rgba(0, 212, 255, 0.5);
+      text-align: center;
+      position: relative;
+    }
+
+    .title {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 28px;
+      font-weight: 700;
+      margin-bottom: 30px;
+      color: #00d4ff;
+      letter-spacing: 2px;
+      text-shadow: 0 0 15px #00d4ff, 0 0 25px #00a9d8;
+      user-select: none;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+    }
+
+    input {
+      margin-bottom: 20px;
+      padding: 14px 16px;
+      border-radius: 10px;
+      border: none;
+      outline: none;
+      font-size: 16px;
+      font-weight: 500;
+      transition: box-shadow 0.3s ease, border 0.3s ease;
+      color: #111;
+    }
+
+    input::placeholder {
+      color: #888;
+      font-weight: 400;
+    }
+
+    input:focus {
+      border: 2px solid #00d4ff;
+      box-shadow: 0 0 15px #00d4ff;
+      background: #e0f7ff;
+      color: #000;
+    }
+
+    button[type="submit"] {
+      background: linear-gradient(135deg, #00d4ff, #0077a6);
+      color: #f0f8ff;
+      border: none;
+      padding: 14px;
+      border-radius: 12px;
+      font-weight: 700;
+      font-size: 17px;
+      cursor: pointer;
+      box-shadow: 0 6px 15px rgba(0, 212, 255, 0.6);
+      transition: background 0.4s ease, box-shadow 0.4s ease, transform 0.25s ease;
+      user-select: none;
+    }
+
+    button[type="submit"]:hover,
+    button[type="submit"]:focus {
+      background: linear-gradient(135deg, #0077a6, #00d4ff);
+      box-shadow: 0 10px 25px rgba(0, 212, 255, 0.9);
+      transform: scale(1.07);
+      outline: none;
+    }
+
+    .signup-link {
+      color: #a3d8ff;
+      text-decoration: none;
+      font-size: 15px;
+      margin-top: 20px;
+      display: inline-block;
+      font-weight: 600;
+      transition: color 0.3s ease;
+      user-select: none;
+    }
+
+    .signup-link:hover,
+    .signup-link:focus {
+      color: #00d4ff;
+      text-decoration: underline;
+      outline: none;
+    }
+
+    /* Messages styling */
+    .messages {
+      margin-top: 30px;
+      padding: 15px 20px;
+      background: rgba(255, 69, 58, 0.8);
+      border-radius: 10px;
+      box-shadow: 0 0 15px rgba(255, 69, 58, 0.6);
+      font-weight: 600;
+      font-size: 14px;
+      color: #fff;
+      user-select: none;
+    }
+
+    .message {
+      margin: 0;
+      line-height: 1.4;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <div class="title">Login to PLANWISE</div>
+    <form method="POST">
+        {% csrf_token %}
+        <input type="text" name="username" placeholder="Username" required />
+        <input type="password" name="password" placeholder="Password" required />
+        <button type="submit">Login</button>
+        <a href="{% url 'signup' %}" class="signup-link">Don't have an account? Sign up</a>
+    </form>      
+
+    {% if messages %}
+      <div class="messages" role="alert">
+        {% for message in messages %}
+          <p class="message">{{ message }}</p>
+        {% endfor %}
+      </div>
+    {% endif %}
+  </div>
+
+</body>
+</html>

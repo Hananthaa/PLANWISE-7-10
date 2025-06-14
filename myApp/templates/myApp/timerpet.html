@@ -156,7 +156,7 @@
         }
 
         //pet selections ---------------------------------------------------------------------------------
-        fetch('/timerpet/getpet/7')
+        fetch('/timerpet/getpet/{{user.id}}')
             .then(response => {
                 if (!response.ok) {
                 throw new Error('Network response was not ok');

@@ -3,15 +3,124 @@
 <head>
   <meta charset="UTF-8">
   <title>Task Dashboard</title>
+<<<<<<< HEAD
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <style>
     body {
       background-color: #1c1c1c;
+=======
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      margin: 0;
+      transition: background-color 0.4s ease, color 0.4s ease;
+    }
+
+    body.light-mode {
+      background-color: #f5f5f5;
+      color: #1e1e1e;
+    }
+
+    body.dark-mode {
+      background-color: #1c1c1c;
+      color: #f1f1f1;
+    }
+
+    h2 {
+      text-align: center;
+      color: #00d4ff;
+      margin-bottom: 1.5rem;
+    }
+
+    .task-container {
+      max-width: 1100px;
+      margin: auto;
+      background-color: #2e2e2e;
+      padding: 2rem;
+      border-radius: 15px;
+      box-shadow: 0 0 20px rgba(0, 212, 255, 0.2);
+    }
+
+    body.light-mode .task-container {
+      background-color: white;
+      color: #000;
+    }
+
+    .form-label, .text-white {
+      color: inherit;
+    }
+
+    .btn-primary, .btn-outline-success {
+      background-color: #00d4ff;
+      color: #000;
+      border: none;
+      font-weight: bold;
+    }
+
+    .btn-outline-success {
+      border: 2px solid #00d4ff;
+    }
+
+    .btn-outline-success:hover {
+      background-color: #00b2d8;
+    }
+
+    .table {
+      background-color: #3a3a3a;
+      color: white;
+    }
+
+    body.light-mode .table {
+      background-color: #f0f0f0;
+      color: #000;
+    }
+
+    th {
+      background-color: #00d4ff;
+      color: black;
+    }
+
+    td {
+      background-color: #505050;
+    }
+
+    body.light-mode td {
+      background-color: #fff;
+    }
+
+    .chart-box {
+      background-color: #2e2e2e;
+      padding: 1.5rem;
+      border-radius: 12px;
+      box-shadow: 0 0 10px rgba(0, 212, 255, 0.1);
+    }
+
+    body.light-mode .chart-box {
+      background-color: #fff;
+    }
+
+    .theme-toggle {
+      text-align: right;
+      padding: 1rem 2rem;
+    }
+
+    .theme-toggle button {
+      padding: 8px 14px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: bold;
+      background-color: #00d4ff;
+      color: black;
+>>>>>>> 55da34f (commit)
     }
   </style>
 </head>
 <body>
+<<<<<<< HEAD
         <div class="d-flex justify-content-center mt-5">
         <div style="width: 400px;">
           <h2 class="text-white text-center mb-3">Task Status</h2>
@@ -21,10 +130,27 @@
   <h2 class="text-white text-center mb-4">Your Tasks</h2>
   <!-- Add Task Form -->
 <div class="container mt-4">
+=======
+
+<div class="theme-toggle">
+  <button id="toggleTheme">Toggle Theme 🌗</button>
+</div>
+
+<div class="task-container">
+  <div class="chart-box mb-5">
+    <h2>Task Status</h2>
+    <canvas id="taskStatusChart"></canvas>
+  </div>
+
+  <h2>Your Tasks</h2>
+
+  <!-- Add Task Form -->
+>>>>>>> 55da34f (commit)
   <form method="POST" action="{% url 'add_task' %}">
     {% csrf_token %}
     <div class="d-flex justify-content-center flex-wrap gap-3">
 
+<<<<<<< HEAD
       <!-- Title -->
       <div class="d-flex flex-column">
         <label class="form-label text-white">Title</label>
@@ -46,6 +172,25 @@
       <!-- Assignee -->
       <div class="d-flex flex-column">
         <label class="form-label text-white">Assignee</label>
+=======
+      <div class="d-flex flex-column">
+        <label class="form-label">Title</label>
+        <input type="text" name="title" placeholder="Task Title" required class="form-control" style="width: 200px;">
+      </div>
+
+      <div class="d-flex flex-column">
+        <label class="form-label">Description</label>
+        <input type="text" name="description" placeholder="Task Description" required class="form-control" style="width: 200px;">
+      </div>
+
+      <div class="d-flex flex-column">
+        <label class="form-label">Date</label>
+        <input type="date" name="date" required class="form-control" style="width: 200px;">
+      </div>
+
+      <div class="d-flex flex-column">
+        <label class="form-label">Assignee</label>
+>>>>>>> 55da34f (commit)
         <select name="shared_with" multiple class="form-control" style="height: 80px; width: 200px;">
           {% for user in users %}
             {% if user != request.user %}
@@ -55,6 +200,7 @@
         </select>
       </div>
 
+<<<<<<< HEAD
 <!-- Submit Button -->
 <div class="d-flex flex-column">
   <br><br>
@@ -128,6 +274,78 @@
   </div>
 
 <!-- Chart.js Config -->
+=======
+      <div class="d-flex flex-column">
+        <br><br>
+        <button type="submit" class="btn btn-primary">Add</button>
+      </div>
+    </div>
+  </form>
+
+  <!-- Search -->
+  <div class="d-flex justify-content-center mt-4">
+    <form class="form-inline" method="GET" action="">
+      <input class="form-control mr-2" type="search" name="q" placeholder="Search tasks..." aria-label="Search">
+      <button class="btn btn-outline-success" type="submit">Search</button>
+    </form>
+  </div>
+
+  <!-- Table -->
+  <div class="mt-4">
+    <table class="table text-center">
+      <thead>
+        <tr>
+          <th>Title</th>
+          <th>Description</th>
+          <th>Date</th>
+          <th>Action</th>
+          <th>Time Left</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% if tasks %}
+          {% for task in tasks %}
+            <tr>
+              <td>{{ task.title }}</td>
+              <td>{{ task.description }}</td>
+              <td>{{ task.date }}</td>
+              <td>
+                {% if not task.completed %}
+                  <form method="POST" action="{% url 'complete_task' task.id %}" style="display: inline;">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-warning btn-sm">Mark Completed</button>
+                  </form>
+                {% else %}
+                  <span class="badge bg-success">Completed</span>
+                {% endif %}
+                <a href="{% url 'edit_task' task.id %}" class="btn btn-secondary btn-sm">Edit</a>
+                <a href="{% url 'delete_task' task.id %}" class="btn btn-danger btn-sm">Delete</a>
+              </td>
+              <td>
+                {% if task.time_left != None %}
+                  {% if task.time_left > 0 %}
+                    {{ task.time_left }} day{{ task.time_left|pluralize }} left
+                  {% elif task.time_left == 0 %}
+                    <strong>Due today!</strong>
+                  {% else %}
+                    <span class="text-danger">Time's up</span>
+                  {% endif %}
+                {% else %}
+                  No due date
+                {% endif %}
+              </td>
+            </tr>
+          {% empty %}
+            <tr><td colspan="5">No tasks found.</td></tr>
+          {% endfor %}
+        {% endif %}
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- Chart Script -->
+>>>>>>> 55da34f (commit)
 <script>
   const ctx = document.getElementById('taskStatusChart').getContext('2d');
   const total = {{ completed_count }} + {{ pending_count }};
@@ -157,9 +375,13 @@
           position: 'bottom',
           labels: {
             color: 'white',
+<<<<<<< HEAD
             font: {
               size: 14
             },
+=======
+            font: { size: 14 },
+>>>>>>> 55da34f (commit)
             boxWidth: 20,
             padding: 15
           }
@@ -167,6 +389,28 @@
       }
     }
   });
+<<<<<<< HEAD
+=======
+
+  // Theme toggle
+  const body = document.body;
+  const toggleButton = document.getElementById("toggleTheme");
+
+  function applyTheme(theme) {
+    body.classList.remove("light-mode", "dark-mode");
+    body.classList.add(theme + "-mode");
+    localStorage.setItem("theme", theme);
+    toggleButton.textContent = theme === "light" ? "Dark Mode 🌙" : "Light Mode ☀️";
+  }
+
+  const savedTheme = localStorage.getItem("theme") || "dark";
+  applyTheme(savedTheme);
+
+  toggleButton.addEventListener("click", () => {
+    const newTheme = body.classList.contains("light-mode") ? "dark" : "light";
+    applyTheme(newTheme);
+  });
+>>>>>>> 55da34f (commit)
 </script>
 </body>
 {% endblock %}

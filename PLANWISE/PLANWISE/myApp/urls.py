@@ -12,11 +12,14 @@ from django.conf.urls.static import static
 
 
 urlpatterns = [
+<<<<<<< HEAD
+=======
     path('timerpet/', views.timer, name='timerpet'),
     path('timerpet/changepet/', views.changepet, name='changepet'),
     path('timerpet/getpet/<int:user_id>', views.getpet, name='getpet'),
     path('users/', views.user_list, name='user_list'),
     path('chat/<str:username>/', views.chat_view, name='chat'),
+>>>>>>> 55da34f (commit)
     path('add_task/', views.add_task, name='add_task'),
     path('delete_task/<int:task_id>/', views.delete_task, name='delete_task'),
     path('edit/<int:task_id>/', views.edit_task, name='edit_task'),
@@ -47,4 +50,10 @@ urlpatterns = [
     path('delete_topic/<int:topic_id>/', views.delete_topic, name='delete_topic'), #tracker end
     path('topic_completion/<int:topic_id>/', views.topic_complete, name='topic_complete'),
     path('topic_uncompletion/<int:topic_id>/', views.topic_uncomplete, name='topic_uncomplete'),
+<<<<<<< HEAD
+    path('timerpet/', views.timer, name='timerpet'),
+    path('timerpet/changepet/', views.changepet, name='changepet'),
+    path('timerpet/getpet/<int:user_id>', views.getpet, name='getpet'),
+=======
+>>>>>>> 55da34f (commit)
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

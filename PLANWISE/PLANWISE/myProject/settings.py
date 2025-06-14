@@ -1,6 +1,10 @@
 from pathlib import Path
 import os
 
+import os
+import dj_database_url
+
+
 # Base directory path for your project
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -35,6 +39,10 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
+
+
 ]
 
 # Root URL configuration

@@ -1,4 +1,6 @@
 from datetime import datetime, timedelta
+<<<<<<< HEAD
+=======
 from datetime import date
 
 import calendar
@@ -41,6 +43,7 @@ class TaskCalendar(calendar.HTMLCalendar):
             html += f'{self.formatweek(week, year, month)}\n'
         html += '</table>'
         return html
+>>>>>>> 55da34f (commit)
 
 def get_prev_month(date):
     """Returns the first day of the previous month based on the given date."""

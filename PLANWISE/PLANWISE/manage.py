@@ -5,7 +5,11 @@ import sys
 
 
 def main():
+<<<<<<< HEAD
+    os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'myProject.settings')  # Or 'myProject.settings' — pick the right one
+=======
     os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'myProject.settings')  # Confirm this matches your project folder
+>>>>>>> 55da34f (commit)
     try:
         from django.core.management import execute_from_command_line
     except ImportError as exc:
@@ -18,3 +22,7 @@ def main():
 
 if __name__ == '__main__':
     main()
+<<<<<<< HEAD
+
+=======
+>>>>>>> 55da34f (commit)

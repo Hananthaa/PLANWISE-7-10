@@ -23,7 +23,11 @@
         </form>
         <table style="width:100%">
             <tr>
+<<<<<<< HEAD
+                <td class = "right"> <input type="text" id="inputTimerMin" name="set" size= "3" onblur="setTimer()"> 
+=======
                 <td class = "right"> <input type="text" id="inputTimerMin" name="set" size= "3" onblur="setTimer()">
+>>>>>>> 55da34f (commit)
                     minutes
                 </td>
                 <td> <input type="text" id="inputTimerSec" name="set" size= "3" onblur="setTimer()">
@@ -43,7 +47,11 @@
                             <button type="submit" onclick="changepet()">
                             <input type="hidden" name="user" id="user" value="{{user.id}}">
                             <input type="hidden" name="pet" id="pet" value="duck.gif">
+<<<<<<< HEAD
+                            
+=======
 
+>>>>>>> 55da34f (commit)
                             <img src="/static/images/duck.gif" alt="duck" width="100" height="100">
                         </button></form>
                    </td>
@@ -92,10 +100,17 @@
 
             if (isIntegerString(inputTimerMin.value) && isIntegerString(inputTimerSec.value)) {
                 timeleft = parseInt(inputTimerMin.value*60) + parseInt(inputTimerSec.value);
+<<<<<<< HEAD
+                
+            } else {
+                timerleft = 0;
+            } 
+=======
 
             } else {
                 timerleft = 0;
             }
+>>>>>>> 55da34f (commit)
 
             updateTimer();
         }
@@ -131,7 +146,11 @@
             setTimer();
         }
 
+<<<<<<< HEAD
+        
+=======
 
+>>>>>>> 55da34f (commit)
         function changepet(){
             //document.body.style.backgroundImage = "url('/static/images/duck.gif')";
             document.getElementById("petform").submit();
@@ -155,8 +174,14 @@
             }
         }
 
+<<<<<<< HEAD
+        //pet selections ----------------------------------------------------------------------------------- 
+
+        fetch('/timerpet/getpet/9')
+=======
         //pet selections ---------------------------------------------------------------------------------
         fetch('/timerpet/getpet/7')
+>>>>>>> 55da34f (commit)
             .then(response => {
                 if (!response.ok) {
                 throw new Error('Network response was not ok');

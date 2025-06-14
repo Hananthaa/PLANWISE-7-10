@@ -2,14 +2,22 @@
     margin: 0 auto;
     max-width: 400px;
     text-align: center;
+<<<<<<< HEAD
+    padding : 20px; 
+=======
     padding : 20px;
+>>>>>>> 55da34f (commit)
     font-family: Arial, sans-serif;
 }
 
 .right {
     text-align: right;
   }
+<<<<<<< HEAD
+  
+=======
 
+>>>>>>> 55da34f (commit)
 .title{
     font-size: 36px;
     margin-bottom: 10px;
@@ -62,5 +70,10 @@ body {
     margin: 0 auto;
     max-width: 400px;
     text-align: center;
+<<<<<<< HEAD
+    padding : 20px; 
+}
+=======
     padding : 20px;
 }
+>>>>>>> 55da34f (commit)

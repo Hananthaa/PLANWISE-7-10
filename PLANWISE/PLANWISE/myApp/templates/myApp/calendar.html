@@ -6,6 +6,14 @@
     <style>
         body {
             font-family: 'Inter', sans-serif;
+<<<<<<< HEAD
+            background-color: #1c1c1c;
+            margin: 0;
+            padding: 2rem;
+            color: #f1f1f1;
+        }
+
+=======
             margin: 0;
             transition: background-color 0.4s ease, color 0.4s ease;
         }
@@ -20,6 +28,42 @@
             color: #f1f1f1;
         }
 
+        /* Navbar */
+        .navbar-theme {
+            background-color: #00d4ff;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 30px;
+            border-radius: 12px;
+            margin: 20px auto;
+            max-width: 1100px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .navbar-theme h2 {
+            margin: 0;
+            font-size: 22px;
+            font-weight: 600;
+            color: #000;
+        }
+
+        .navbar-theme button {
+            background-color: #fff;
+            color: #000;
+            padding: 8px 14px;
+            border: none;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .navbar-theme button:hover {
+            background-color: #e0e0e0;
+        }
+
+>>>>>>> 55da34f (commit)
         h1 {
             text-align: center;
             margin-bottom: 1rem;
@@ -57,12 +101,23 @@
         }
 
         .notes-section {
+<<<<<<< HEAD
+            background-color: #2e2e2e;
+            color: white;
+=======
+>>>>>>> 55da34f (commit)
             padding: 20px;
             border-radius: 12px;
             width: 350px;
             box-shadow: 0 0 15px rgba(0, 212, 255, 0.1);
         }
 
+<<<<<<< HEAD
+        .notes-section h2 {
+            color: #00d4ff;
+            margin-bottom: 1rem;
+            font-size: 20px;
+=======
         body.light-mode .notes-section {
             background-color: #fff;
             color: #222;
@@ -71,6 +126,7 @@
         body.dark-mode .notes-section {
             background-color: #2e2e2e;
             color: white;
+>>>>>>> 55da34f (commit)
         }
 
         textarea, input, select {
@@ -156,6 +212,13 @@
                 width: 100%;
             }
         }
+<<<<<<< HEAD
+    </style>
+</head>
+<body>
+    <h1>{{ month_name }} {{ year }}</h1>
+
+=======
 
         .quote-block {
             text-align: center;
@@ -173,22 +236,22 @@
         }
     </style>
 </head>
+
 <body>
-    <div style="text-align: right; padding: 1rem 2rem;">
-        <button id="toggleTheme" style="padding: 8px 14px; border: none; border-radius: 6px; cursor: pointer; font-weight: bold;">
-            Toggle Theme 🌗
-        </button>
+    <div class="navbar-theme">
+        <h2>PLANWISE Calendar</h2>
+        <button id="toggleTheme">Toggle Theme 🌗</button>
     </div>
 
     <h1>{{ month_name }} {{ year }}</h1>
 
-    <!-- ✅ Motivational Quote -->
     {% if quote %}
     <div class="quote-block">
         <blockquote>"{{ quote }}"</blockquote>
     </div>
     {% endif %}
 
+>>>>>>> 55da34f (commit)
     <div class="calendar-nav">
         <a href="?month={{ prev_month.month }}&year={{ prev_month.year }}&date={{ selected_date }}">⬅ Prev</a>
         <a href="?month={{ next_month.month }}&year={{ next_month.year }}&date={{ selected_date }}">Next ➡</a>
@@ -223,6 +286,8 @@
             {{ calendar|safe }}
         </div>
     </div>
+<<<<<<< HEAD
+=======
 
     <script>
         const body = document.body;
@@ -243,5 +308,6 @@
             applyTheme(newTheme);
         });
     </script>
+>>>>>>> 55da34f (commit)
 </body>
 {% endblock %}

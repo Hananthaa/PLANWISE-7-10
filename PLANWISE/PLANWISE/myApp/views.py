@@ -1,3 +1,70 @@
+<<<<<<< HEAD
+from .models import ForumPost, Comment, Exam, Subject, Topic, Task
+from .forms import ExamForm, SubjectForm, TopicForm, ChangePet
+from .utils import get_prev_month, get_next_month
+
+from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib.auth.models import User
+from django.contrib import messages
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
+from django.utils.safestring import mark_safe
+from django.db.models import Q, Count
+from django.http import HttpResponse
+
+import calendar
+from calendar import HTMLCalendar
+from datetime import datetime, date
+import pytz
+
+from django.shortcuts import render
+import holidays
+from datetime import date, datetime, timedelta
+from calendar import HTMLCalendar
+from django.shortcuts import render, redirect, get_object_or_404
+from .models import Task, HabitRecord
+from datetime import date
+from django.contrib.auth.decorators import login_required
+
+from datetime import date
+from myApp.models import Task, HabitRecord
+
+from datetime import date
+from django.contrib.auth.decorators import login_required
+from myApp.models import Task, HabitRecord
+
+from collections import Counter
+
+from collections import Counter
+
+from django.shortcuts import render, redirect
+from .models import DailyNote
+from .forms import DailyNoteForm
+from datetime import date
+
+from datetime import datetime
+
+from myApp.models import Pet
+
+@login_required
+def habit_tracker(request):
+    user = request.user
+    today = date.today()
+    tasks = Task.objects.filter(user=user)
+
+    # Count how many tasks share the same title
+    title_counts = Counter(task.title for task in tasks)
+
+    # Convert to list of dicts for template
+    tasks_grouped = [{'title': title, 'count': count} for title, count in title_counts.items()]
+
+    return render(request, 'myApp/habit_tracker.html', {
+        'tasks_grouped': tasks_grouped,
+        'today': today,
+    })
+
+
+=======
 #other_pyfile(madebyown)
 from .models import ForumPost, Comment, Exam, Subject, Topic, Task, Pet, DailyNote, Message
 from .forms import ExamForm, SubjectForm, TopicForm, ChangePet, DailyNoteForm
@@ -70,6 +137,7 @@ def getpet(request, user_id):
         return HttpResponse(pet.pet)
 
 #HANA's Exam Tracker
+>>>>>>> 55da34f (commit)
 @login_required
 def test(request):
     if request.method == 'POST':
@@ -103,7 +171,10 @@ def test(request):
         'subject_colors': subject_colors
     })
 
+<<<<<<< HEAD
+=======
 #HANA's Exam Delete Features
+>>>>>>> 55da34f (commit)
 @login_required
 def delete_exam(request, exam_id):
     exam = get_object_or_404(Exam, pk=exam_id)
@@ -114,6 +185,35 @@ def delete_exam(request, exam_id):
 
     return HttpResponse("This view only accepts POST requests to delete an exam.")
 
+<<<<<<< HEAD
+@login_required
+def edit_post(request, post_id):
+    post = get_object_or_404(ForumPost, id=post_id)
+
+    if request.user != post.user:
+        messages.error(request, "You can only edit your own posts.")
+        return redirect('forum')
+
+    if request.method == 'POST':
+        post.title = request.POST.get('title')
+        post.content = request.POST.get('content')
+        post.save()
+        return redirect('post_detail', post_id=post.id)
+
+    return render(request, 'myApp/edit_post.html', {'post': post})
+
+@login_required
+def delete_post(request, post_id):
+    post = get_object_or_404(ForumPost, id=post_id)
+
+    if request.user != post.user:
+        messages.error(request, "You can only delete your own posts.")
+        return redirect('forum')
+
+    post.delete()
+    return redirect('forum')
+
+=======
 #HANA's Exam Tracker
 def tracker(request):
     print ("hi++++++++++++++++++++++++++++")
@@ -226,13 +326,17 @@ def tasks(request):
     })
 
 #ALISHA's Task Completed Feature
+>>>>>>> 55da34f (commit)
 def complete_task(request, id):
     task = get_object_or_404(Task, id=id)
     task.completed = True
     task.save()
     return redirect('tasks')
 
+<<<<<<< HEAD
+=======
 #ALISHA's Edit Task Feature
+>>>>>>> 55da34f (commit)
 @login_required
 def edit_task(request, task_id):
     task = get_object_or_404(Task, id=task_id, user=request.user)
@@ -246,7 +350,180 @@ def edit_task(request, task_id):
 
     return render(request, 'myApp/edit_task.html', {'task': task})
 
+<<<<<<< HEAD
+@login_required
+def tasks(request):
+    query = request.GET.get('q')
+    if query:
+        tasks = Task.objects.filter(
+            Q(user=request.user) | Q(shared_with=request.user),
+            Q(title__icontains=query) | Q(description__icontains=query)
+        ).distinct()
+    else:
+        tasks = Task.objects.filter(Q(user=request.user) | Q(shared_with=request.user)).distinct()
+
+    today = date.today()
+    total = tasks.count()
+    completed = tasks.filter(completed=True).count()
+    pending = total - completed
+
+    for task in tasks:
+        task.time_left = (task.date - today).days if task.date else None
+
+    users = User.objects.exclude(id=request.user.id)
+
+    return render(request, 'myApp/tasks.html', {
+        'tasks': tasks,
+        'completed_count': completed,
+        'pending_count': pending,
+        'users': users,
+    })
+
+
+def logout_view(request):
+    logout(request)
+    return redirect('login')
+
+def home(request):
+    return render(request, 'myApp/home.html')
+
+def signup_view(request):
+    if request.method == "POST":
+        name = request.POST['name']
+        email = request.POST['email']
+        password = request.POST['password']
+
+        if User.objects.filter(email=email).exists():
+            messages.error(request, "Email already registered.")
+        else:
+            user = User.objects.create_user(username=email, email=email, password=password)
+            user.first_name = name
+            user.save()
+            messages.success(request, "Account created successfully!")
+            return redirect('login')
+
+    return render(request, "myApp/signup.html")
+
+def login_view(request):
+    if request.method == "POST":
+        username = request.POST['username']
+        password = request.POST['password']
+
+        user = authenticate(request, username=username, password=password)
+
+        if user is not None:
+            login(request, user)
+            return redirect('dashboard')
+        else:
+            messages.error(request, "Invalid credentials.")
+
+    return render(request, 'myApp/login.html')
+
+@login_required
+def dashboard(request):
+    tasks = Task.objects.filter(Q(user=request.user) | Q(shared_with=request.user)).distinct()
+    total = tasks.count()
+    completed = tasks.filter(completed=True).count()
+    pending = total - completed
+
+    forum_posts = ForumPost.objects.all()
+    total_posts = forum_posts.count()
+    total_replies = Comment.objects.count()
+
+    most_active_post = (
+        forum_posts.annotate(reply_count=Count('comments'))
+        .order_by('-reply_count')
+        .first()
+    )
+
+    return render(request, 'myApp/home3.html', {
+        'total_tasks': total,
+        'completed_tasks': completed,
+        'pending_tasks': pending,
+        'total_posts': total_posts,
+        'total_replies': total_replies,
+        'most_active_post': most_active_post,
+    })
+
+from calendar import HTMLCalendar
+from django.utils.safestring import mark_safe
+from datetime import timedelta, date
+from django.db.models import Count
+from datetime import date, timedelta
+
+from datetime import date, timedelta
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import render
+
+
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import render
+from .models import Task
+from datetime import date, timedelta
+from django.db.models import Count
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import render
+from datetime import date, timedelta
+from .models import Task
+
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import render
+from datetime import date, timedelta
+from .models import Task
+
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import render
+from datetime import date, timedelta
+from .models import Task
+
+@login_required
+def calendar_view(request):
+    year = int(request.GET.get('year', datetime.today().year))
+    month = int(request.GET.get('month', datetime.today().month))
+
+    current_date = datetime(year, month, 1)
+
+    # Get tasks for the current user, year, and month
+    tasks = Task.objects.filter(user=request.user, date__year=year, date__month=month)
+
+    # Create a dictionary mapping day -> list of task titles
+    tasks_per_day = {}
+    for task in tasks:
+        day = task.date.day
+        if day not in tasks_per_day:
+            tasks_per_day[day] = []
+        tasks_per_day[day].append(task.title)
+
+    # Custom calendar class that shows task titles inside each day cell
+    class TaskCalendar(HTMLCalendar):
+        def formatday(self, day, weekday):
+            if day == 0:
+                return '<td></td>'
+            # Get task titles for this day, or empty list
+            task_titles = tasks_per_day.get(day, [])
+            # Build HTML for the task titles (limit or scroll if too many)
+            tasks_html = ''
+            for title in task_titles:
+                tasks_html += f'<div style="font-size: 0.75em; margin-top: 2px;">• {title}</div>'
+
+            return f'<td><strong>{day}</strong>{tasks_html}</td>'
+
+    cal = TaskCalendar().formatmonth(year, month)
+
+    context = {
+        'calendar': mark_safe(cal),
+        'year': year,
+        'month': month,
+        'month_name': calendar.month_name[month],
+        'prev_month': get_prev_month(current_date),
+        'next_month': get_next_month(current_date),
+    }
+    return render(request, 'myApp/calendar.html', context)
+
+
+=======
 #ALISHA's Add Task Feature
+>>>>>>> 55da34f (commit)
 @login_required
 def add_task(request):
     users = User.objects.exclude(id=request.user.id)
@@ -266,7 +543,10 @@ def add_task(request):
 
     return render(request, 'myApp/add_task.html', {'users': users})
 
+<<<<<<< HEAD
+=======
 #ALISHA's Edit Task Feature
+>>>>>>> 55da34f (commit)
 @login_required
 def edit_task(request, task_id):
     task = get_object_or_404(Task, id=task_id)
@@ -297,7 +577,10 @@ def edit_task(request, task_id):
         'users': users,
     })
 
+<<<<<<< HEAD
+=======
 #ALISHA's Delete Task Feature
+>>>>>>> 55da34f (commit)
 @login_required
 def delete_task(request, task_id):
     task = get_object_or_404(Task, id=task_id)
@@ -309,6 +592,8 @@ def delete_task(request, task_id):
     task.delete()
     return redirect('tasks')
 
+<<<<<<< HEAD
+=======
 #ALISHA'S Habit Tracker
 @login_required
 def habit_tracker(request):
@@ -328,6 +613,7 @@ def habit_tracker(request):
     })
 
 #ALISHA's Forum
+>>>>>>> 55da34f (commit)
 @login_required
 def forum_view(request):
     query = request.GET.get('q')
@@ -340,7 +626,10 @@ def forum_view(request):
 
     return render(request, 'myApp/forum.html', {'posts': posts, 'query': query})
 
+<<<<<<< HEAD
+=======
 #ALISHA's Forum Post Detail
+>>>>>>> 55da34f (commit)
 @login_required
 def post_detail(request, post_id):
     post = get_object_or_404(ForumPost, id=post_id)
@@ -354,7 +643,10 @@ def post_detail(request, post_id):
 
     return render(request, 'myApp/post_detail.html', {'post': post, 'comments': comments})
 
+<<<<<<< HEAD
+=======
 #ALISHA's Create Post Feature
+>>>>>>> 55da34f (commit)
 @login_required
 def create_post(request):
     if request.method == 'POST':
@@ -366,6 +658,9 @@ def create_post(request):
         return redirect('forum')
     return render(request, 'myApp/create_post.html')
 
+<<<<<<< HEAD
+
+=======
 #ALISHA'S Edit Forum Feature
 @login_required
 def edit_post(request, post_id):
@@ -559,6 +854,7 @@ def dashboard(request):
     })
 
 #HANANTHAA's Music Player
+>>>>>>> 55da34f (commit)
 @login_required
 def music_player(request):
     malaysia_timezone = pytz.timezone('Asia/Kuala_Lumpur')
@@ -567,7 +863,11 @@ def music_player(request):
         'malaysia_time': malaysia_time
     })
 
+<<<<<<< HEAD
+
+=======
 #HANANTHAA's Calendar Format
+>>>>>>> 55da34f (commit)
 def your_calendar_view(request):
     year = int(request.GET.get('year', datetime.now().year))
     month = int(request.GET.get('month', datetime.now().month))
@@ -601,6 +901,209 @@ def your_calendar_view(request):
 
     return render(request, 'myApp/your_template.html', context)
 
+<<<<<<< HEAD
+#tracker
+def tracker(request):
+    print ("hi++++++++++++++++++++++++++++")
+    if request.method == 'POST':
+        print("Wowo post :O")
+        form = SubjectForm(request.POST)
+        if form.is_valid():
+            form.save()
+    else:
+        form = SubjectForm()
+    subject = Subject.objects.all()  # Retrieve all saved exams
+    return render(request, 'myapp/tracker.html',
+                  {'subject': subject})
+
+def display_exams(request):
+    exams = Exam.objects.all()  # Retrieve all Exam objects from the database
+    return render(request, 'display_exams.html', {'exams': exams})
+
+def delete_subject(request, subject_id):
+    subject = get_object_or_404(Subject, pk=subject_id)
+
+    if request.method == 'POST':
+        subject.delete()
+        return redirect('tracker')
+    return HttpResponse("This view only accepts POST requests to delete an exam.")
+
+def add_topic(request):
+    if request.method == 'POST':
+        form = TopicForm(request.POST)
+        subject_id = request.POST.get('subject_id')
+        subject = get_object_or_404(Subject, pk=subject_id)
+        print (subject_id + '========================')
+        print (subject.subject + '--------------------------')
+        if form.is_valid():
+            topic = form.save(commit=False)
+            print (topic.title + '0000000000000000000000000000000000')
+            topic.subject = subject
+            topic.save()
+            return redirect('tracker')
+    else:
+        return redirect('tracker')
+
+
+@login_required
+def tasks(request):
+    query = request.GET.get('q')
+    tasks = Task.objects.filter(
+        Q(user=request.user) | Q(shared_with=request.user),
+        Q(title__icontains=query) | Q(description__icontains=query)
+    ).distinct() if query else Task.objects.filter(Q(user=request.user) | Q(shared_with=request.user)).distinct()
+
+    today = date.today()
+    for task in tasks:
+        task.time_left = (task.date - today).days if task.date else None
+
+    completed = tasks.filter(completed=True).count()
+    total = tasks.count()
+    pending = total - completed
+    users = User.objects.exclude(id=request.user.id)
+
+    return render(request, 'myApp/tasks.html', {
+        'tasks': tasks,
+        'completed_count': completed,
+        'pending_count': pending,
+        'users': users,
+    })
+
+
+def delete_topic(request, topic_id):
+    topic = get_object_or_404(Topic, pk=topic_id)
+
+    if request.method == 'POST':
+        topic.delete()
+        return redirect('tracker')
+
+    return HttpResponse("This view only accepts POST requests to delete a topic.")
+
+#save topic
+def topic_complete(request, topic_id):
+    if request.method == 'POST':
+        print ("checkbox checked*********")
+        topic = get_object_or_404(Topic, pk=topic_id)
+        topic.topiccomplete = True
+        topic.save()
+        return redirect('tracker')
+    else:
+        return HttpResponse("Method Not Allowed", status=405)
+
+def topic_uncomplete(request, topic_id):
+    if request.method == 'POST':
+        print ("checkbox unchecked*********")
+        topic = get_object_or_404(Topic, pk=topic_id)
+        topic.topiccomplete = False
+        topic.save()
+        return redirect('tracker')
+    else:
+        return HttpResponse("Method Not Allowed", status=405)
+
+@login_required
+def calendar_view(request):
+    year = int(request.GET.get('year', datetime.now().year))
+    month = int(request.GET.get('month', datetime.now().month))
+
+    cal = calendar.HTMLCalendar(calendar.SUNDAY)
+    calendar_html = cal.formatmonth(year, month)
+
+    first_day = date(year, month, 1)
+    prev_month_date = first_day - timedelta(days=1)
+    next_month_day = first_day + timedelta(days=31)
+    next_month_date = date(next_month_day.year, next_month_day.month, 1)
+
+    selected_date_str = request.GET.get('date', str(date.today()))
+    selected_date = datetime.strptime(selected_date_str, '%Y-%m-%d').date()
+
+    # Get or create the note
+    note, created = DailyNote.objects.get_or_create(user=request.user, date=selected_date)
+
+    if request.method == 'POST':
+        if 'save_note' in request.POST:
+            form = DailyNoteForm(request.POST, instance=note)
+            if form.is_valid():
+                form.save()
+                return redirect(f"{request.path}?year={year}&month={month}&date={selected_date}")
+        elif 'delete_note' in request.POST:
+            note.delete()
+            return redirect(f"{request.path}?year={year}&month={month}&date={selected_date}")
+    else:
+        form = DailyNoteForm(instance=note)
+
+    context = {
+        'calendar': calendar_html,
+        'month_name': calendar.month_name[month],
+        'year': year,
+        'prev_month': {'year': prev_month_date.year, 'month': prev_month_date.month},
+        'next_month': {'year': next_month_date.year, 'month': next_month_date.month},
+        'form': form,
+        'selected_date': selected_date,
+        'note': note,
+    }
+    return render(request, 'myApp/calendar.html', context)
+
+def calendar_view(request):
+    date_str = request.GET.get('date')
+    selected_date = None
+
+    if date_str:
+        try:
+            # Try the correct format for 'May 29, 2025'
+            selected_date = datetime.strptime(date_str, '%B %d, %Y').date()
+        except ValueError:
+            try:
+                # Fallback in case it's '2025-05-29'
+                selected_date = datetime.strptime(date_str, '%Y-%m-%d').date()
+            except ValueError:
+                selected_date = timezone.now().date()
+    else:
+        selected_date = timezone.now().date()
+
+def timer(request):
+    if request.method == 'POST':
+        print ("checkbox unchecked*********")
+        topic = get_object_or_404(Topic, pk=topic_id)
+        topic.topiccomplete = False
+        topic.save()
+        return redirect('tracker')
+    else:
+        return HttpResponse("Method Not Allowed", status=405)
+
+def timer(request):
+    print ("hi++++++++++++++++++++++++++++")
+    return render(request, 'myApp/timerpet.html')
+
+#Change pet
+def changepet(request):
+    if request.method == 'POST':
+        print("Wowo post for pet :OOOOOOOOOOOOOOOOOOOOOO")
+        user_id_post = request.POST.get('user') #find user id
+        pet_post = request.POST.get('pet') #post pet change user choose
+        pet_check = Pet.objects.filter(user_id=user_id_post).first() #current user pet 
+        form = ChangePet(request.POST)
+
+        if form.is_valid():
+            
+            if pet_check: #see if user have pet record 
+                print(user_id_post + "QQQQQQQQQQQQQQQQQQqqq")
+                pet = Pet.objects.get(user_id=user_id_post) #get record for the user (ex. user 9)
+                pet.pet = pet_post
+                pet.save(update_fields=['pet'])
+            else: 
+                print("pet form saved!!!!!!!!!!!!!1")
+                form.save()
+        else:
+            print("not valid888888888888888888888888")
+            print(form.errors)
+    return redirect("/timerpet")
+
+def getpet(request, user_id):
+    if request.method == 'GET':
+        print("Wowo get pet :kkkkkkkkkkkkkkkkkkkkk")
+        pet = Pet.objects.get(user_id=user_id)
+        return HttpResponse(pet.pet)
+=======
 #HANANTHAA's Motivational Quotes
 def your_calendar_view(request):
     # existing code ...
@@ -625,3 +1128,4 @@ def your_calendar_view(request):
         "quote": random_quote,
     }
     return render(request, 'myApp/your_template_name.html', context)
+>>>>>>> 55da34f (commit)

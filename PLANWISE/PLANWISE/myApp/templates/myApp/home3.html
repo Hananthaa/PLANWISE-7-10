@@ -7,18 +7,23 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <style>
-         body {
-             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-             margin: 0;
-             padding: 0;
-             background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
-             color: #e0e6e9;
-             min-height: 100vh;
-             display: flex;
-             justify-content: center;
-             align-items: center;
-}
-
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+<<<<<<< HEAD
+            background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+            color: #e0e6e9;
+=======
+            background: linear-gradient(135deg, #f6f6f6, #eaeaea);
+            color: #2a4d69;
+>>>>>>> 55da34f (commit)
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+<<<<<<< HEAD
         .dashboard-container {
             background: rgba(30, 40, 50, 0.85);
             max-width: 900px;
@@ -31,10 +36,27 @@
             backdrop-filter: blur(12px);
             animation: fadeIn 1.2s ease forwards;
         }
+=======
+
+        .dashboard-container {
+            background: #f9f9f9cc;
+            max-width: 1000px;
+            width: 95%;
+            margin: 40px auto;
+            padding: 50px 60px;
+            border-radius: 25px;
+            box-shadow: 0 12px 40px rgba(42, 77, 105, 0.25);
+            text-align: center;
+            backdrop-filter: blur(10px);
+            animation: fadeIn 1.2s ease forwards;
+        }
+
+>>>>>>> 55da34f (commit)
         @keyframes fadeIn {
             from {opacity: 0; transform: translateY(20px);}
             to {opacity: 1; transform: translateY(0);}
         }
+<<<<<<< HEAD
         h1 {
             font-weight: 800;
             font-size: 3rem;
@@ -53,6 +75,23 @@
             text-shadow: 0 1px 3px rgba(0,0,0,0.5);
         }
         /* Flex container for buttons */
+=======
+
+        h1 {
+            font-weight: 800;
+            font-size: 3rem;
+            color: #2a4d69;
+            margin-bottom: 20px;
+            letter-spacing: 1.2px;
+        }
+
+        p {
+            font-size: 1.3rem;
+            margin-bottom: 35px;
+            color: #555;
+        }
+
+>>>>>>> 55da34f (commit)
         .button-group {
             display: flex;
             flex-wrap: wrap;
@@ -60,6 +99,7 @@
             gap: 18px;
             margin-bottom: 40px;
         }
+<<<<<<< HEAD
         a {
             flex: 1 1 140px;
             max-width: 160px;
@@ -91,10 +131,46 @@
             box-shadow: 0 8px 30px rgba(30, 41, 59, 0.7);
             font-weight: 600;
             font-size: 1.15rem;
+=======
+
+        a {
+            flex: 1 1 140px;
+            max-width: 180px;
+            text-decoration: none;
+            color: #fff;
+            background: #d1495b;
+            padding: 14px 0;
+            border-radius: 35px;
+            font-weight: 700;
+            font-size: 1rem;
+            text-align: center;
+            box-shadow: 0 6px 15px rgba(209, 73, 91, 0.5);
+            transition: background 0.35s ease, box-shadow 0.35s ease, transform 0.25s ease;
+            user-select: none;
+        }
+
+        a:hover,
+        a:focus {
+            background: #b1374a;
+            box-shadow: 0 10px 25px rgba(209, 73, 91, 0.7);
+            transform: translateY(-3px);
+        }
+
+        .summary-box {
+            background: #ffffff;
+            color: #2a4d69;
+            padding: 30px 35px;
+            border-radius: 20px;
+            margin: 25px auto 0 auto;
+            box-shadow: 0 8px 30px rgba(42, 77, 105, 0.15);
+            font-weight: 600;
+            font-size: 1.1rem;
+>>>>>>> 55da34f (commit)
             text-align: left;
             max-width: 540px;
             transition: transform 0.3s ease;
         }
+<<<<<<< HEAD
         .summary-box:hover {
             transform: translateY(-5px);
             box-shadow: 0 12px 45px rgba(66, 230, 149, 0.8);
@@ -104,6 +180,18 @@
             margin-bottom: 18px;
             text-align: center;
             text-shadow: 0 0 8px #42e695;
+=======
+
+        .summary-box:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 45px rgba(209, 73, 91, 0.3);
+        }
+
+        .summary-box h3 {
+            color: #d1495b;
+            margin-bottom: 18px;
+            text-align: center;
+>>>>>>> 55da34f (commit)
             user-select: none;
         }
     </style>
@@ -120,8 +208,12 @@
             <a href="{% url 'test' %}">Exam Analyzer</a>
             <a href="{% url 'music_player' %}">Music Player</a>
             <a href="{% url 'tracker' %}">Exam Tracker</a>
+<<<<<<< HEAD
+            <a href="javascript:window.open('http://127.0.0.1:8000/timerpet/', '', 'width=400,height=500')">Timer Pet</a>
+=======
             <a href="{% url 'user_list' %}">Chat Box</a>
             <a href="javascript:window.open('http://127.0.0.1:8000/timerpet/', '', 'width=400,height=500')">Timer</a>
+>>>>>>> 55da34f (commit)
             <a href="{% url 'logout' %}">Logout</a>
         </div>
 

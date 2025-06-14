@@ -3,6 +3,8 @@ from django.contrib.auth.models import User
 from django.urls import reverse
 from django.utils.text import slugify
 from django_ckeditor_5.fields import CKEditor5Field
+<<<<<<< HEAD
+=======
 from django.db import models
 from django.contrib.auth.models import User
 
@@ -22,6 +24,7 @@ class Message(models.Model):
 
     def __str__(self):
         return f"From {self.sender} to {self.receiver} at {self.timestamp}"
+>>>>>>> 55da34f (commit)
 
 
 class Exam(models.Model):
@@ -124,3 +127,13 @@ class DailyNote(models.Model):
     def __str__(self):
         return f"{self.user.username} - {self.date}"
 
+<<<<<<< HEAD
+#pet timer
+class Pet(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=False, blank=False)
+    pet = models.CharField(max_length=200)
+
+    def __str__(self):
+        return self.pet
+=======
+>>>>>>> 55da34f (commit)

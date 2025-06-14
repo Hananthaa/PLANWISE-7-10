@@ -1,0 +1,174 @@
+{% load static %}
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Timer</title>
+    {% block extrahead %}
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    {% endblock %}
+</head>
+<body>
+    <div class="container">
+        <h1 class="timer">Timer</h1>
+        <p class='timer' id="timer">00:00</p>
+        <div class="button">
+            <button id="start">Start</button>
+            <button id="stop">Stop</button>
+            <button id="reset">Reset</button>
+            <button id="changepet" onclick="myFunction()">Change pet</button>
+        </div>
+        <form>
+            <label for="set">Set timer:</label><br>
+        </form>
+        <table style="width:100%">
+            <tr>
+                <td class = "right"> <input type="text" id="inputTimerMin" name="set" size= "3" onblur="setTimer()">
+                    minutes
+                </td>
+                <td> <input type="text" id="inputTimerSec" name="set" size= "3" onblur="setTimer()">
+                    seconds
+                </td>
+            </tr>
+        </table>
+        <br><br>
+        <div id="myDIV" style = "display: none;">
+            Choose your pet.
+            <br>
+            <table style="width:100%">
+                <tr>
+                    <td>
+                        <form id="petform" method="post" action="changepet/">
+                            {% csrf_token %}
+                            <button type="submit" onclick="changepet()">
+                            <input type="hidden" name="user" id="user" value="{{user.id}}">
+                            <input type="hidden" name="pet" id="pet" value="duck.gif">
+
+                            <img src="/static/images/duck.gif" alt="duck" width="100" height="100">
+                        </button></form>
+                   </td>
+                    <td><form id="petform" method="post" action="changepet/">
+                            {% csrf_token %}
+                            <button type="submit" onclick="changepet()">
+                            <input type="hidden" name="user" id="user" value="{{user.id}}">
+                            <input type="hidden" name="pet" id="pet" value="pusheen.gif">
+                            <img src="/static/images/pusheen.gif" alt="pusheen" width="100" height="100">
+                        </button></form>
+                    </td>
+                    <td><form id="petform" method="post" action="changepet/">
+                        {% csrf_token %}
+                        <button type="submit" onclick="changepet()">
+                        <input type="hidden" name="user" id="user" value="{{user.id}}">
+                        <input type="hidden" name="pet" id="pet" value="catzzz.gif">
+                        <img src="/static/images/catzzz.gif" alt="catzzz" width="100" height="100">
+                        </button></form>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        function myFunction() {
+        var myWindow = window.open("/timerpet/", "", "width=400,height=500");
+        }
+
+        //timer
+
+        const startEl = document.getElementById("start");
+        const stopEl = document.getElementById("stop");
+        const resetEl = document.getElementById("reset");
+        const timerEl = document.getElementById("timer");
+        const setEl = document.getElementById("setEl");
+        const inputTimerMin = document.getElementById("inputTimerMin");
+        const inputTimerSec = document.getElementById("inputTimerSec");
+
+        function isIntegerString(str) {
+            return /^-?\d+$/.test(str);
+        }
+
+        //start here work Timer
+        function setTimer() {
+
+            if (isIntegerString(inputTimerMin.value) && isIntegerString(inputTimerSec.value)) {
+                timeleft = parseInt(inputTimerMin.value*60) + parseInt(inputTimerSec.value);
+
+            } else {
+                timerleft = 0;
+            }
+
+            updateTimer();
+        }
+
+
+        function updateTimer() {
+            console.log ("====== function called" + timeleft);
+            let minutes = Math.floor(timeleft / 60);
+            let seconds = timeleft % 60;
+            let formattedTime = `${minutes.toString().padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`;
+
+            timerEl.innerHTML = formattedTime;
+        }
+
+        function startTimer(){
+            interval = setInterval(() => {
+                timeleft--;
+                updateTimer();
+                if(timeleft === 0) {
+                    clearInterval(interval);
+                    alert("Time's up!");
+                    timeLeft = 60;
+                }
+            }, 1000);
+        }
+
+        function stopTimer(){
+            clearInterval(interval);
+        }
+
+        function resetTimer(){
+            clearInterval(interval);
+            setTimer();
+        }
+
+
+        function changepet(){
+            //document.body.style.backgroundImage = "url('/static/images/duck.gif')";
+            document.getElementById("petform").submit();
+        }
+
+        function showInputPopup() {
+            inputPopup = document.getElementById('inputPopup');
+            inputPopup.style.display = 'block';
+        }
+
+        startEl.addEventListener("click", startTimer);
+        stopEl.addEventListener("click", stopTimer);
+        resetEl.addEventListener("click", resetTimer);
+
+        function myFunction() {
+            var x = document.getElementById("myDIV");
+            if (x.style.display === "none") {
+                x.style.display = "block";
+            } else {
+                x.style.display = "none";
+            }
+        }
+
+        //pet selections ---------------------------------------------------------------------------------
+        fetch('/timerpet/getpet/7')
+            .then(response => {
+                if (!response.ok) {
+                throw new Error('Network response was not ok');
+                }
+                return response.text();
+            })
+            .then(data => {
+                console.log(data);
+                document.body.style.backgroundImage = "url('/static/images/"+data+"')";
+            })
+            .catch(error => {
+                console.error('There was a problem with the fetch operation:', error);
+            });
+    </script>
+</body>

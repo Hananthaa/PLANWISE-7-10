@@ -1,0 +1,278 @@
+{% extends "myApp/base2.html" %}
+{% block content %}
+{% load static %}
+{% load custom_filters %}
+
+<head>
+  <meta charset="UTF-8">
+  <title>Exam Tracker</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+    body.dark-mode {
+      background-color: #121212;
+      color: #ffffff;
+    }
+
+    body.light-mode {
+      background-color: #f5f5f5;
+      color: #1e1e1e;
+    }
+
+    .navbar-theme {
+      background-color: #00d4ff;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 30px;
+      border-radius: 12px;
+      margin: 20px auto;
+      max-width: 1100px;
+    }
+
+    .navbar-theme h2 {
+      margin: 0;
+      font-size: 22px;
+      font-weight: 600;
+      color: #000;
+    }
+
+    .navbar-theme button {
+      background-color: #fff;
+      color: #000;
+      padding: 8px 14px;
+      border: none;
+      border-radius: 8px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 30px auto;
+      padding: 20px;
+      border-radius: 12px;
+    }
+
+    canvas {
+      display: block;
+      margin: 30px auto;
+      background-color: #fff;
+      border-radius: 10px;
+    }
+
+    .popup {
+      display: none;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background-color: #eee;
+      padding: 20px;
+      border-radius: 10px;
+      z-index: 1000;
+      width: 300px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.3);
+    }
+
+    .popup-content input,
+    .popup-content select,
+    .popup-content textarea {
+      width: 100%;
+      padding: 6px;
+      margin-bottom: 10px;
+    }
+
+    .close-button {
+      float: right;
+      cursor: pointer;
+      font-size: 20px;
+      color: #000;
+    }
+
+    .btn-planwise {
+      background-color: #00d4ff;
+      color: #000;
+      font-weight: bold;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 8px;
+      margin-bottom: 10px;
+    }
+
+    .btn-planwise:hover {
+      background-color: #00b2d8;
+    }
+
+    .progress-container {
+      width: 100%;
+      background-color: #ccc;
+      border-radius: 20px;
+      overflow: hidden;
+      margin: 8px 0;
+    }
+
+    .progress-bar {
+      height: 20px;
+      border-radius: 20px;
+    }
+
+    .exam-box {
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      padding: 15px;
+      margin-bottom: 15px;
+    }
+
+    .delete-form {
+      margin-top: 10px;
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Navbar -->
+  <div class="navbar-theme">
+    <h2>PLANWISE Exam Tracker</h2>
+    <button id="toggleTheme">Toggle Theme 🌗</button>
+  </div>
+
+  <div class="container">
+    <!-- Chart -->
+    <canvas id="examBarChart" width="400" height="200"></canvas>
+
+    <!-- Add Exam Button -->
+    <button class="btn-planwise" onclick="showInputPopup()">+ Add Exam</button>
+
+    <!-- Popup -->
+    <div id="inputPopup" class="popup">
+      <div class="popup-content">
+        <span class="close-button" onclick="closeInputPopup()">&times;</span>
+        <form method="post">
+          {% csrf_token %}
+          <label for="id_subject">Subject:</label>
+          <input type="text" name="subject" id="id_subject" required>
+
+          <label for="id_exam_date">Exam Date:</label>
+          <input type="date" name="exam_date" id="id_exam_date" required>
+
+          <label for="id_mark">Mark (%):</label>
+          <input type="number" name="mark" id="id_mark" min="0" max="100">
+
+          <button type="submit" class="btn-planwise w-100">Save Exam</button>
+        </form>
+      </div>
+    </div>
+
+    <hr>
+
+    <h4 class="mb-3">📘 Saved Exams:</h4>
+    {% if exams %}
+      {% for exam in exams %}
+        <div class="exam-box">
+          <strong>Subject:</strong> {{ exam.subject }}<br>
+          <strong>Exam Date:</strong> {{ exam.exam_date }}<br>
+          <strong>Mark:</strong> {% if exam.mark %}{{ exam.mark }}%{% else %}<em>Not entered</em>{% endif %}
+
+          <div class="progress-container">
+            <div class="progress-bar" style="width: {{ exam.mark|default:0 }}%; background-color: {{ subject_colors|get_item:exam.subject }};"></div>
+          </div>
+
+          <form method="post" action="{% url 'delete_exam' exam.id %}" class="delete-form">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+          </form>
+        </div>
+      {% endfor %}
+    {% else %}
+      <p>No exams have been saved yet.</p>
+    {% endif %}
+  </div>
+
+  <!-- Chart Script -->
+  <script>
+    const ctx = document.getElementById('examBarChart').getContext('2d');
+
+    const barLabels = [{% for exam in exams %}"{{ exam.subject }}",{% endfor %}];
+    const barData = [{% for exam in exams %}{{ exam.mark|default:0 }},{% endfor %}];
+
+    const subjectColorMap = {
+      {% for subject, color in subject_colors.items %}
+        "{{ subject }}": "{{ color }}",
+      {% endfor %}
+    };
+    const barColors = barLabels.map(subject => subjectColorMap[subject]);
+
+    new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: barLabels,
+        datasets: [{
+          label: 'Exam Marks',
+          data: barData,
+          backgroundColor: barColors,
+          borderColor: barColors,
+          borderWidth: 1
+        }]
+      },
+      options: {
+        scales: {
+          y: {
+            beginAtZero: true,
+            max: 100,
+            ticks: {
+              color: 'white'
+            }
+          },
+          x: {
+            ticks: {
+              color: 'white'
+            }
+          }
+        },
+        plugins: {
+          legend: {
+            labels: {
+              color: 'white'
+            }
+          }
+        }
+      }
+    });
+
+    // Popup Controls
+    const inputPopup = document.getElementById('inputPopup');
+    function showInputPopup() {
+      inputPopup.style.display = 'block';
+    }
+    function closeInputPopup() {
+      inputPopup.style.display = 'none';
+    }
+
+    // Theme Toggle
+    const toggleBtn = document.getElementById("toggleTheme");
+    const body = document.body;
+
+    function applyTheme(theme) {
+      body.classList.remove("dark-mode", "light-mode");
+      body.classList.add(`${theme}-mode`);
+      localStorage.setItem("theme", theme);
+      toggleBtn.textContent = theme === "light" ? "Dark Mode 🌙" : "Light Mode ☀️";
+    }
+
+    const savedTheme = localStorage.getItem("theme") || "dark";
+    applyTheme(savedTheme);
+
+    toggleBtn.addEventListener("click", () => {
+      const newTheme = body.classList.contains("light-mode") ? "dark" : "light";
+      applyTheme(newTheme);
+    });
+  </script>
+</body>
+{% endblock %}

@@ -1,0 +1,215 @@
+{% extends "myApp/base2.html" %}
+{% block content %}
+{% load static %}
+{% load custom_filters %}
+
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Exam Tracker</title>
+  {% block extrahead %}
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="{% static 'css/trackerstyle.css' %}">
+  <script src="{% static 'scripts.js' %}"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  {% endblock %}
+</head>
+
+<body>
+  <br>
+  <button type="button" onclick="showInputPopup()">Add Exam</button>
+
+  <!--Popup Form-->
+  <div id="inputPopup" class="popup">
+    <div class="popup-content">
+      <span class="close-button" onclick="closeInputPopup()">&times;</span>
+      <form method="post">
+        {% csrf_token %}
+        <label for="id_subject">Subject:</label><br>
+        <input type="text" name="subject" id="id_subject" required><br><br>
+
+        <label for="id_exam_date">Exam Date:</label><br>
+        <input type="date" name="exam_date" id="id_exam_date" required><br><br>
+        <p>(Days left)</p>
+
+        <button type="submit">Save Exam</button>
+      </form>
+    </div>
+  </div>
+
+  <hr>
+
+  <h3>Saved Exams:</h3>
+  {% if subject %}
+  <div class="accordion-flush" id="accordionFlushExample">
+    {% for sub in subject %}
+
+    <div class="accordion-item">
+
+      <p class="accordion-header" id="heading{{ sub.id }}">
+
+      <table width=100%>
+        <tr>
+          <td width=50%>
+            <button class="accordion-header" type="button" data-bs-toggle="collapse"
+              data-bs-target="#flush-collapse{{ sub.id }}" aria-expanded="false"
+              aria-controls="flush-collapse{{ sub.id }}">
+              {{ sub.subject|upper}}
+            </button> &nbsp;&nbsp;&nbsp;
+          </td>
+
+          <td width=50%>
+            <!--progress bar-->
+            <div class="progress-container">
+              <div class="progress-bar">
+                <div class="progress-fill" id="progressFill-{{ sub.id }}"></div>
+              </div>
+              <span id="progressText-{{ sub.id }}">0%</span>
+            </div>
+          </td>
+        </tr>
+      </table>
+      </p>
+
+      <div id="flush-collapse{{ sub.id }}" class="accordion-collapse collapse" aria-labelledby="heading{{ sub.id }}"
+        data-bs-parent="#accordionFlushExample">
+        <div class="accordion-body">
+          <ul>
+            <li>
+              <!--Subject-->
+              <table width= 30%>
+                <tr >
+                  <td width= 50%>Subject: {{ sub.subject|title}}<br></td>
+                
+                  <td width= 50%><form method="post" action="{% url 'delete_subject' sub.id %}">
+                    {% csrf_token %}
+                    <button type="submit">Delete {{ sub.subject }}</button>
+                      </form>
+                  </td>
+                </tr>
+              </table>
+
+              Exam Date: {{ sub.exam_date }}<br>
+              <div class="countdown" id="countdown-{{ sub.id }}">Loading countdown...</div>
+
+              <!--Topics-->
+              <tr>
+                <td><strong>Topics:</strong></td>
+
+                <td>
+                  <button type="button" class="add-topic-btn" data-subject-id="{{ sub.id }}">Add Topic</button>
+                </td>
+              </tr>
+
+              {% if sub.topics.all %}
+              {% for topic in sub.topics.all %}
+
+              <table width=70%>
+                <tr>
+                  <td>
+                    <ul>
+                      <li>
+
+                        <!--#1-->
+                  <td width=50%>{{ topic.title|title}} </td>
+
+                  <!--#2-->
+                  <td width=5%>
+                    {% if topic.topiccomplete %}
+                    <!--checkbox complete-->
+                    <form method="post" action="{% url 'topic_uncomplete' topic.id %}">
+                      {% csrf_token %}
+                      <input type="checkbox" name="is_complete" checked class="topic_checkbox-{{ sub.id }}"
+                        value={{topic.topiccomplete}} onchange="updateProgressBar({{ sub.id }}), this.form.submit()"
+                        id="topic_checkbox-{{ sub.id }}">
+                      <!--don't touch the red squigggly >:(-->
+                    </form>
+                    {% else %}
+                    <!--checkbox uncomplete-->
+                    <form method="post" action="{% url 'topic_complete' topic.id %}">
+                      {% csrf_token %}
+                      <input type="checkbox" name="is_complete" class="topic_checkbox-{{ sub.id }}"
+                        value={{topic.topiccomplete}} onchange="updateProgressBar({{ sub.id }}), this.form.submit()"
+                        id="topic_checkbox-{{ sub.id }}">
+                      <!--don't touch the red squigggly >:(-->
+                    </form>
+                    {% endif %}
+                  </td>
+
+                  <!--#3-->
+                  <td width=45%>
+                    <form method="post" action="{% url 'delete_topic' topic.id %}">
+                      {% csrf_token %}
+                      <button type="submit">Delete {{ topic.title|title}}</button>
+                    </form>
+                  </td>
+                  {% endfor %}
+
+                </tr>
+            </li>
+          </ul>
+          </td>
+          </table>
+          </li>
+          </ul>
+          {% else %}
+          <p>No topics saved under this subject yet.</p>
+          {% endif %}
+
+
+
+          <script>
+            updateProgressBar({{ sub.id }});
+            //don't touch the red squigggly >:( 
+          </script>
+          </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  {% else %}
+  <p>No exams have been saved yet.</p>
+  {% endif %}
+
+  <div id="addTopicModal" class="modal">
+    <div class="modal-content">
+      <span class="close-button">&times;</span>
+      <form id="addTopicForm" method="post" action="{% url 'add_topic' %}">
+        {% csrf_token %}
+        <input type="hidden" name="subject_id" id="modalSubjectId">
+        <label for="title" style="color: #000;">Title:</label><br>
+        <input type="text" name="title" id="title"><br>
+        <button type="submit">Save Topic</button>
+      </form>
+    </div>
+  </div>
+</body>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        {% for sub in subject %}
+            (function() {
+                var examDate = new Date("{{ sub.exam_date|date:'Y-m-d' }}");
+                var today = new Date();
+                var timeDiff = examDate - today;
+                var daysLeft = Math.ceil(timeDiff / (1000 * 60 * 60 * 24));
+
+                var countdownEl = document.getElementById("countdown-{{ sub.id }}");
+
+                if (daysLeft > 0) {
+                    countdownEl.innerText = daysLeft + " days left";
+                } else if (daysLeft === 0) {
+                    countdownEl.innerText = "Exam is today!";
+                } else {
+                    countdownEl.innerText = "Exam passed";
+                }
+            })();
+        {% endfor %}
+    });
+</script>
+
+
+{% endblock %}

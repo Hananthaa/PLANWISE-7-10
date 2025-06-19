@@ -125,7 +125,7 @@ def tracker(request):
     else:
         form = SubjectForm()
     subject = Subject.objects.all()  # Retrieve all saved exams
-    return render(request, 'myapp/tracker.html', {'subject': subject})
+    return render(request, 'myApp/tracker.html', {'subject': subject})
 
 
 #HANA's Delete Subject Feature

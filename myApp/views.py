@@ -30,7 +30,7 @@ def timer(request):
         topic.save()
         return redirect('tracker')
     else:
-        return HttpResponse("Method Not Allowed", status=405)
+        return render(request, 'myApp/timerpet.html')
 
 
 def timer(request):

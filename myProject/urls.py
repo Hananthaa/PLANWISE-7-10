@@ -7,4 +7,6 @@ urlpatterns = [
     path('admin/', admin.site.urls, name='admin'),
     path('', include('myApp.urls')),
     path('music/', music_player, name='music_player'),
+    path('', include('myApp.urls')),
+
 ]

@@ -1,0 +1,148 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>Dashboard | PLANWISE</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #f6f6f6, #eaeaea);
+            color: #2a4d69;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .dashboard-container {
+            background: #f9f9f9cc;
+            max-width: 1000px;
+            width: 95%;
+            margin: 40px auto;
+            padding: 50px 60px;
+            border-radius: 25px;
+            box-shadow: 0 12px 40px rgba(42, 77, 105, 0.25);
+            text-align: center;
+            backdrop-filter: blur(10px);
+            animation: fadeIn 1.2s ease forwards;
+        }
+
+        @keyframes fadeIn {
+            from {opacity: 0; transform: translateY(20px);}
+            to {opacity: 1; transform: translateY(0);}
+        }
+
+        h1 {
+            font-weight: 800;
+            font-size: 3rem;
+            color: #2a4d69;
+            margin-bottom: 20px;
+            letter-spacing: 1.2px;
+        }
+
+        p {
+            font-size: 1.3rem;
+            margin-bottom: 35px;
+            color: #555;
+        }
+
+        .button-group {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 18px;
+            margin-bottom: 40px;
+        }
+
+        a {
+            flex: 1 1 140px;
+            max-width: 180px;
+            text-decoration: none;
+            color: #fff;
+            background: #d1495b;
+            padding: 14px 0;
+            border-radius: 35px;
+            font-weight: 700;
+            font-size: 1rem;
+            text-align: center;
+            box-shadow: 0 6px 15px rgba(209, 73, 91, 0.5);
+            transition: background 0.35s ease, box-shadow 0.35s ease, transform 0.25s ease;
+            user-select: none;
+        }
+
+        a:hover,
+        a:focus {
+            background: #b1374a;
+            box-shadow: 0 10px 25px rgba(209, 73, 91, 0.7);
+            transform: translateY(-3px);
+        }
+
+        .summary-box {
+            background: #ffffff;
+            color: #2a4d69;
+            padding: 30px 35px;
+            border-radius: 20px;
+            margin: 25px auto 0 auto;
+            box-shadow: 0 8px 30px rgba(42, 77, 105, 0.15);
+            font-weight: 600;
+            font-size: 1.1rem;
+            text-align: left;
+            max-width: 540px;
+            transition: transform 0.3s ease;
+        }
+
+        .summary-box:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 45px rgba(209, 73, 91, 0.3);
+        }
+
+        .summary-box h3 {
+            color: #d1495b;
+            margin-bottom: 18px;
+            text-align: center;
+            user-select: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard-container">
+        <h1>Welcome to your Dashboard, {{ user.first_name }}!</h1>
+        <p>Here’s where you can manage your calendar and alarms.</p>
+
+        <div class="button-group">
+            <a href="{% url 'calendar' %}">View Calendar</a>
+            <a href="{% url 'tasks' %}">Tasks Manager</a>
+            <a href="{% url 'forum' %}">Forum Discussion</a>
+            <a href="{% url 'test' %}">Exam Analyzer</a>
+            <a href="{% url 'music_player' %}">Music Player</a>
+            <a href="{% url 'tracker' %}">Exam Tracker</a>
+            <a href="{% url 'user_list' %}">Chat Box</a>
+            <a href="javascript:window.open('http://127.0.0.1:8000/timerpet/', '', 'width=400,height=500')">Timer</a>
+            <a href="{% url 'logout' %}">Logout</a>
+        </div>
+
+        <div class="summary-box">
+            <h3>📊 Task Summary</h3>
+            <p>Total Tasks: {{ total_tasks }}</p>
+            <p>✅ Completed: {{ completed_tasks }}</p>
+            <p>🕒 Pending: {{ pending_tasks }}</p>
+        </div>
+
+        <div class="summary-box">
+            <h3>📢 Forum Summary</h3>
+            <p>Total Posts: {{ total_posts }}</p>
+            <p>Total Replies: {{ total_replies }}</p>
+            {% if most_active_post %}
+                <p>🔥 Most Active Topic: "{{ most_active_post.title }}"</p>
+            {% else %}
+                <p>No forum activity yet.</p>
+            {% endif %}
+        </div>
+    </div>
+</body>
+</html>

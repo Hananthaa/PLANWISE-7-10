@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Home - PLANWISE</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    /* Reset some default margin and padding */
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: url('https://images.unsplash.com/photo-1506784983877-45594efa4cbe?auto=format&fit=crop&w=1470&q=80') no-repeat center center fixed;
+      background-size: cover;
+      color: #e0e6f0;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Navbar styles */
+    .navbar {
+      background: rgba(3, 37, 65, 0.85);
+      padding: 15px 30px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: fixed;
+      width: 100%;
+      top: 0;
+      left: 0;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+      z-index: 999;
+      font-weight: 600;
+    }
+
+    .navbar .title {
+      font-size: 28px;
+      color: #00d4ff;
+      letter-spacing: 2px;
+      text-shadow: 1px 1px 5px rgba(0, 212, 255, 0.6);
+    }
+
+    .navbar a {
+      color: #00d4ff;
+      text-decoration: none;
+      font-size: 16px;
+      padding: 10px 22px;
+      border: 2px solid #00d4ff;
+      border-radius: 25px;
+      transition: all 0.3s ease;
+      margin-left: 15px;
+      box-shadow: 0 0 8px rgba(0, 212, 255, 0.7);
+    }
+
+    .navbar a:hover,
+    .navbar a:focus {
+      background: #00d4ff;
+      color: #043145;
+      box-shadow: 0 0 15px #00d4ff;
+      text-decoration: none;
+      outline: none;
+    }
+
+    /* Welcome container */
+    .welcome-container {
+      margin-top: 140px;
+      background: rgba(2, 25, 44, 0.85);
+      max-width: 700px;
+      padding: 50px 40px;
+      margin-left: auto;
+      margin-right: auto;
+      border-radius: 20px;
+      box-shadow:
+        0 8px 32px 0 rgba(0, 0, 0, 0.7),
+        inset 0 0 100px 40px rgba(0, 212, 255, 0.15);
+      text-align: center;
+      color: #bcd9ea;
+      user-select: none;
+      transition: box-shadow 0.3s ease;
+    }
+
+    .welcome-container:hover {
+      box-shadow:
+        0 12px 48px 0 rgba(0, 0, 0, 0.9),
+        inset 0 0 120px 50px rgba(0, 212, 255, 0.25);
+    }
+
+    .welcome-container h1 {
+      font-size: 3.8rem;
+      margin-bottom: 20px;
+      color: #00d4ff;
+      text-shadow: 1px 2px 8px rgba(0, 212, 255, 0.7);
+      user-select: text;
+    }
+
+    .welcome-container p {
+      font-size: 1.3rem;
+      line-height: 1.6;
+      color: #d0e8ff;
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+      user-select: text;
+    }
+
+    /* Link inside welcome text */
+    .welcome-container a {
+      color: #00d4ff;
+      text-decoration: underline;
+      font-weight: 600;
+      transition: color 0.3s ease;
+    }
+
+    .welcome-container a:hover,
+    .welcome-container a:focus {
+      color: #00a0cc;
+      outline: none;
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+      .welcome-container {
+        width: 90%;
+        padding: 40px 20px;
+      }
+
+      .navbar {
+        flex-wrap: wrap;
+      }
+
+      .navbar a {
+        margin: 10px 8px 0 0;
+        padding: 8px 18px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="navbar" role="navigation" aria-label="main navigation">
+    <div class="title">PLANWISE</div>
+
+    {% if user.is_authenticated %}
+      <a href="{% url 'logout' %}">Logout</a>
+    {% else %}
+      <a href="{% url 'login' %}">Login</a>
+      <a href="{% url 'signup' %}">Sign Up</a>
+    {% endif %}
+  </nav>
+
+  <main class="welcome-container" role="main">
+    {% if user.is_authenticated %}
+      <h1>Welcome, {{ request.user.first_name }}!</h1>
+      <p>This is your PLANWISE dashboard. Here you’ll soon manage tasks, events, and more.</p>
+    {% else %}
+      <h1>Welcome to PLANWISE!</h1>
+      <p>Please <a href="{% url 'login' %}">login</a> to access your dashboard.</p>
+    {% endif %}
+  </main>
+
+</body>
+</html>

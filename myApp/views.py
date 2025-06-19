@@ -128,6 +128,7 @@ def tracker(request):
     return render(request, 'myApp/tracker.html', {'subject': subject})
 
 
+
 #HANA's Delete Subject Feature
 def delete_subject(request, subject_id):
     subject = get_object_or_404(Subject, pk=subject_id)

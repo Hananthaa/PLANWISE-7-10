@@ -15,7 +15,7 @@ SECRET_KEY = 'django-insecure-ah4_8j3c8^05p-=t&ve6ppu_63iii_up1u&m=6vbqno3*2&((@
 DEBUG = True
 
 # Allowed hosts (set this in production)
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost', 'planwise-tspg.onrender.com']
 
 # Installed apps
 INSTALLED_APPS = [

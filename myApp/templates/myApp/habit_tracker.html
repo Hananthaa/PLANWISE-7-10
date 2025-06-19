@@ -121,32 +121,29 @@
     <h2 class="mb-4 text-center">🔥 Habit Tracker</h2>
 
     <!-- Filter Dropdown -->
-    <form method="get" class="mb-4 text-center">
-      <label for="filter">Show tasks with count:</label>
-      <select name="count_filter" id="filter" class="form-select d-inline w-auto mx-2">
-        <option value="">All</option>
-        <option value="5" {% if request.GET.count_filter == "5" %}selected{% endif %}>5</option>
-        <option value="10" {% if request.GET.count_filter == "10" %}selected{% endif %}>10</option>
-        <option value="15" {% if request.GET.count_filter == "15" %}selected{% endif %}>15</option>
-        <option value="20" {% if request.GET.count_filter == "20" %}selected{% endif %}>20</option>
-        <option value="25" {% if request.GET.count_filter == "25" %}selected{% endif %}>25</option>
-      </select>
-      <button type="submit" class="btn btn-primary">Filter</button>
-    </form>
+  <form method="get" class="mb-4 text-center">
+  <label for="filter">Show tasks with count:</label>
+  <select name="count_filter" id="filter" class="form-select d-inline w-auto mx-2">
+    <option value="" {% if not request.GET.count_filter %}selected{% endif %}>All</option>
+    <option value="1-5" {% if request.GET.count_filter == "1-5" %}selected{% endif %}>1–5</option>
+    <option value="1-10" {% if request.GET.count_filter == "1-10" %}selected{% endif %}>1–10</option>
+    <option value="1-15" {% if request.GET.count_filter == "1-15" %}selected{% endif %}>1–15</option>
+    <option value="1-20" {% if request.GET.count_filter == "1-20" %}selected{% endif %}>1–20</option>
+  </select>
+  <button type="submit" class="btn btn-primary">Filter</button>
+</form>
 
-    <!-- Habit list -->
-    <ul class="list-group">
-      {% for task in tasks_grouped %}
-        {% if not request.GET.count_filter or task.count|stringformat:"s" == request.GET.count_filter %}
-          <li class="list-group-item d-flex justify-content-between align-items-center">
-            {{ task.title }}
-            <span class="badge bg-primary rounded-pill">{{ task.count }}</span>
-          </li>
-        {% endif %}
-      {% empty %}
-        <li class="list-group-item">No tasks found.</li>
-      {% endfor %}
-    </ul>
+
+   <ul class="list-group">
+  {% for task in tasks_grouped %}
+    <li class="list-group-item d-flex justify-content-between align-items-center">
+      {{ task.title }}
+      <span class="badge bg-primary rounded-pill">{{ task.count }}</span>
+    </li>
+  {% empty %}
+    <li class="list-group-item">No tasks found in this range.</li>
+  {% endfor %}
+</ul>
   </div>
 
   <!-- Theme Toggle Script -->

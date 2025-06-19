@@ -322,11 +322,38 @@ def habit_tracker(request):
 
     # Convert to list of dicts for template
     tasks_grouped = [{'title': title, 'count': count} for title, count in title_counts.items()]
+    count_filter = request.GET.get("count_filter")
+
+    tasks_grouped = [{'title': title, 'count': count} for title, count in title_counts.items()]
+
+    if count_filter:
+        try:
+            lower, upper = map(int, count_filter.split("-"))
+            tasks_grouped = [
+                task for task in tasks_grouped
+                if lower <= task['count'] <= upper
+            ]
+        except ValueError:
+            pass  # invalid format, ignore filter
 
     return render(request, 'myApp/habit_tracker.html', {
         'tasks_grouped': tasks_grouped,
         'today': today,
     })
+
+#ALISHA's Forum
+@login_required
+def forum_view(request):
+    query = request.GET.get('q')
+    if query:
+        posts = ForumPost.objects.filter(
+            Q(title__icontains=query) | Q(content__icontains=query)
+        ).order_by('-created_at')
+    else:
+        posts = ForumPost.objects.all().order_by('-created_at')
+
+    return render(request, 'myApp/forum.html', {'posts': posts, 'query': query})
+
 
 #ALISHA's Forum
 @login_required
